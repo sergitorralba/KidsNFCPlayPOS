@@ -1,0 +1,6 @@
+<svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+    <rect x="0" y="0" width="200" height="120" fill="#EB001B"/>
+    <text x="100" y="70" font-family="Arial, sans-serif" font-size="30" fill="white" text-anchor="middle">FUNNY MC</text>
+    <circle cx="70" cy="50" r="30" fill="#FF5F00"/>
+    <circle cx="130" cy="50" r="30" fill="#FFDD00" opacity="0.7"/>
+</svg>
