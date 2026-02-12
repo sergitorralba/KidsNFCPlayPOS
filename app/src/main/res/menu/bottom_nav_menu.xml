@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/shopSelectionFragment"
+        android:icon="@drawable/ic_shop"
+        android:title="Shop" />
+
+    <item
+        android:id="@+id/calculatorFragment"
+        android:icon="@drawable/ic_calculator"
+        android:title="Calculator" />
+
+    <item
+        android:id="@+id/directInputFragment"
+        android:icon="@drawable/ic_input"
+        android:title="Input" />
+
+</menu>

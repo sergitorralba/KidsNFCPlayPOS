@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KidsNFCPlayPOS</string>
+
+    <!-- Menu Categories -->
+    <string name="category_cafe">Cafetería</string>
+    <string name="category_restaurant">Restaurante</string>
+
+    <!-- Cafe Subcategories -->
+    <string name="subcategory_cafe_drinks">Bebidas</string>
+    <string name="subcategory_cafe_food">Comida</string>
+
+    <!-- Cafe Menu Items -->
+    <string name="menu_item_cafe_coffee">Café</string>
+    <string name="menu_item_cafe_tea">Té</string>
+    <string name="menu_item_cafe_muffin">Muffin</string>
+    <string name="menu_item_cafe_croissant">Croissant</string>
+
+    <!-- Restaurant Subcategories -->
+    <string name="subcategory_restaurant_main">Platos Principales</string>
+    <string name="subcategory_restaurant_dessert">Postres</string>
+
+    <!-- Restaurant Menu Items -->
+    <string name="menu_item_restaurant_burger">Hamburguesa</string>
+    <string name="menu_item_restaurant_pizza">Pizza</string>
+    <string name="menu_item_restaurant_cake">Tarta</string>
+    <string name="menu_item_restaurant_icecream">Helado</string>
+
+    <!-- Payment Simulation -->
+    <string name="payment_processing_timer">%d segundos restantes</string>
+</resources>

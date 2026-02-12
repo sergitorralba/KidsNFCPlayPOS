@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.calculator.CalculatorFragment">
+
+    <!-- "Paper" Display for History -->
+    <LinearLayout
+        android:id="@+id/historyDisplayLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="bottom|end"
+        android:padding="8dp"
+        android:background="#E0E0E0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3">
+
+        <TextView
+            android:id="@+id/historyLine3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="1 + 2 =" />
+
+        <TextView
+            android:id="@+id/historyLine2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:textColor="@android:color/darker_gray"
+            tools:text="3 * 4 =" />
+
+        <TextView
+            android:id="@+id/historyLine1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:textColor="@android:color/black"
+            tools:text="12" />
+
+        <TextView
+            android:id="@+id/currentInput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="36sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            tools:text="123.45" />
+
+    </LinearLayout>
+
+    <!-- Keypad -->
+    <GridLayout
+        android:id="@+id/keypadLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:columnCount="4"
+        android:rowCount="5"
+        app:layout_constraintTop_toBottomOf="@id/historyDisplayLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Row 1: Clear, Negate, Percent, Divide -->
+        <Button style="@style/CalculatorButton" android:id="@+id/btnClear" android:text="C" />
+        <Button style="@style/CalculatorButton" android:id="@+id/btnNegate" android:text="+/-" />
+        <Button style="@style/CalculatorButton" android:id="@+id/btnPercent" android:text="%" />
+        <Button style="@style/CalculatorButton.Operator" android:id="@+id/btnDivide" android:text="/" />
+
+        <!-- Row 2: 7, 8, 9, Multiply -->
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn7" android:text="7" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn8" android:text="8" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn9" android:text="9" />
+        <Button style="@style/CalculatorButton.Operator" android:id="@+id/btnMultiply" android:text="x" />
+
+        <!-- Row 3: 4, 5, 6, Subtract -->
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn4" android:text="4" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn5" android:text="5" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn6" android:text="6" />
+        <Button style="@style/CalculatorButton.Operator" android:id="@+id/btnSubtract" android:text="-" />
+
+        <!-- Row 4: 1, 2, 3, Add -->
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn1" android:text="1" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn2" android:text="2" />
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn3" android:text="3" />
+        <Button style="@style/CalculatorButton.Operator" android:id="@+id/btnPlus" android:text="+" />
+
+        <!-- Row 5: 0, Decimal, Equals, Pay -->
+        <Button style="@style/CalculatorButton.Number" android:id="@+id/btn0" android:text="0" />
+        <Button style="@style/CalculatorButton" android:id="@+id/btnDecimal" android:text="." />
+        <Button style="@style/CalculatorButton.Operator" android:id="@+id/btnEquals" android:text="=" />
+        <Button style="@style/CalculatorButton.Accent" android:id="@+id/btnPay" android:text="PAY"
+            android:enabled="false"/>
+
+    </GridLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/shopSelectionFragment">
+
+    <fragment
+        android:id="@+id/shopSelectionFragment"
+        android:name="com.kidsnfcplaypos.ui.shop.ShopSelectionFragment"
+        android:label="ShopSelectionFragment"
+        tools:layout="@layout/fragment_shop_selection" />
+
+    <fragment
+        android:id="@+id/calculatorFragment"
+        android:name="com.kidsnfcplaypos.ui.calculator.CalculatorFragment"
+        android:label="CalculatorFragment"
+        tools:layout="@layout/fragment_calculator">
+        <action
+            android:id="@+id/action_calculatorFragment_to_paymentSimulationFragment"
+            app:destination="@id/paymentSimulationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/directInputFragment"
+        android:name="com.kidsnfcplaypos.ui.directinput.DirectInputFragment"
+        android:label="DirectInputFragment"
+        tools:layout="@layout/fragment_direct_input">
+        <action
+            android:id="@+id/action_directInputFragment_to_paymentSimulationFragment"
+            app:destination="@id/paymentSimulationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/paymentSimulationFragment"
+        android:name="com.kidsnfcplaypos.ui.payment.PaymentSimulationFragment"
+        android:label="PaymentSimulationFragment"
+        tools:layout="@layout/fragment_payment_simulation">
+        <argument
+            android:name="amountToPay"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

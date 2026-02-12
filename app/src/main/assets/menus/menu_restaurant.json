@@ -1,0 +1,22 @@
+{
+  "id": "restaurant",
+  "nameStringResourceName": "category_restaurant",
+  "subCategories": [
+    {
+      "id": "restaurant_main",
+      "nameStringResourceName": "subcategory_restaurant_main",
+      "items": [
+        { "id": "restaurant_burger", "nameStringResourceName": "menu_item_restaurant_burger", "price": 8.50 },
+        { "id": "restaurant_pizza", "nameStringResourceName": "menu_item_restaurant_pizza", "price": 10.00 }
+      ]
+    },
+    {
+      "id": "restaurant_dessert",
+      "nameStringResourceName": "subcategory_restaurant_dessert",
+      "items": [
+        { "id": "restaurant_cake", "nameStringResourceName": "menu_item_restaurant_cake", "price": 4.50 },
+        { "id": "restaurant_icecream", "nameStringResourceName": "menu_item_restaurant_icecream", "price": 3.50 }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.KidsNFCPlayPOS" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/nunito</item>
+        <item name="fontFamily">@font/nunito</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
+
+    <style name="AmountDigitStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">48sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:fontFamily">monospace</item>
+    </style>
+
+    <!-- Base Calculator Button Style -->
+    <style name="CalculatorButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:layout_rowWeight">1</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:backgroundTint">#F0F0F0</item>
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <!-- Number Button Style -->
+    <style name="CalculatorButton.Number" parent="CalculatorButton">
+        <item name="android:backgroundTint">@color/white</item>
+    </style>
+
+    <!-- Operator Button Style -->
+    <style name="CalculatorButton.Operator" parent="CalculatorButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/colorAccent</item> <!-- Orange -->
+    </style>
+
+    <!-- Accent Button Style (e.g., PAY button) -->
+    <style name="CalculatorButton.Accent" parent="CalculatorButton">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/colorPrimary</item> <!-- Green -->
+    </style>
+
+    <style name="Theme.KidsNFCPlayPOS.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+</resources>
