@@ -3,15 +3,26 @@ package com.kidsnfcplaypos.ui.shop
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentShopSelectionBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+import java.math.BigDecimal
 
 class ShopSelectionFragment : Fragment() {
 
@@ -36,43 +47,85 @@ class ShopSelectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupMenu()
         setupRecyclerView()
+        setupPaymentButton()
         observeViewModel()
     }
 
-    private fun setupRecyclerView() {
-        shopCategoryAdapter = ShopCategoryAdapter { category ->
-            // Handle item click: navigate to the detailed menu for this category
-            Log.d("ShopSelectionFragment", "Clicked on ${category.name} (ID: ${category.id})")
-            // TODO: Implement actual navigation to a detailed menu fragment
+    private fun setupPaymentButton() {
+        binding.fabCheckout.setOnClickListener {
+            val totalAmount = viewModel.totalAmount.value
+            if (totalAmount > BigDecimal.ZERO) {
+                val action = ShopSelectionFragmentDirections
+                    .actionShopSelectionFragmentToPaymentSimulationFragment(
+                        totalAmount.toPlainString()
+                    )
+                findNavController().navigate(action)
+            }
         }
+    }
+
+    private fun setupMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.shop_selection_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_switch_menu -> {
+                        MenuSelectionBottomSheet().show(childFragmentManager, MenuSelectionBottomSheet.TAG)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun setupRecyclerView() {
+        // Instantiate the adapter, passing lambdas that call the ViewModel
+        shopCategoryAdapter = ShopCategoryAdapter(
+            onAddItem = { menuItem ->
+                viewModel.addItem(menuItem.id)
+            },
+            onRemoveItem = { menuItem ->
+                viewModel.removeItem(menuItem.id)
+            }
+        )
 
         binding.recyclerViewShopCategories.apply {
-            layoutManager = GridLayoutManager(context, 2) // 2 columns for "Windows Phone tiles" look
+            layoutManager = LinearLayoutManager(context)
             adapter = shopCategoryAdapter
         }
     }
 
     private fun observeViewModel() {
+        // This coroutine will handle the overall screen state (loading and errors)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.menuCategories.collectLatest { categories ->
-                shopCategoryAdapter.submitList(categories)
-            }
-        }
+            viewModel.uiState.collectLatest { uiState ->
+                binding.progressBar.visibility = if (uiState.isLoading) View.VISIBLE else View.GONE
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isLoading.collectLatest { isLoading ->
-                binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.errorMessage.collectLatest { message ->
-                // Display error message (e.g., via Toast or a TextView)
-                if (!message.isNullOrBlank()) {
-                    Log.e("ShopSelectionFragment", message)
+                if (!uiState.error.isNullOrBlank()) {
+                    Log.e("ShopSelectionFragment", "Error: ${uiState.error}")
                     // TODO: Show a more user-friendly error message
                 }
+            }
+        }
+
+        // This new, separate coroutine will handle submitting the list to the adapter
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.shopListItems.collectLatest { shopList ->
+                shopCategoryAdapter.submitList(shopList)
+            }
+        }
+
+        // This new coroutine will handle the payment button visibility
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.totalAmount.collectLatest { total ->
+                binding.fabCheckout.visibility = if (total > BigDecimal.ZERO) View.VISIBLE else View.GONE
             }
         }
     }

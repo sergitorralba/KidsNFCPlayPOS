@@ -1,71 +1,54 @@
 package com.kidsnfcplaypos.ui.directinput
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 
 class DirectInputViewModel : ViewModel() {
 
-    private val _inputDigits = MutableStateFlow(MutableList(5) { '_' }) // 3 for integer, 2 for decimal
-    private var currentDigitIndex = 0
+    private val _digitString = MutableStateFlow("")
+    private val maxLength = 9 // Max digits, e.g., for 9,999,999.99
 
-    private val _formattedAmountDisplay = MutableStateFlow("___.__")
-    val formattedAmountDisplay: StateFlow<String> = _formattedAmountDisplay
+    // Derived state for the actual BigDecimal amount
+    val currentAmount: StateFlow<BigDecimal> = _digitString.map { digits ->
+        if (digits.isEmpty()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(digits).movePointLeft(2)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BigDecimal.ZERO)
 
-    private val _currentAmount = MutableStateFlow(BigDecimal.ZERO)
-    val currentAmount: StateFlow<BigDecimal> = _currentAmount
+    // Derived state for the formatted display string (e.g., "80.01")
+    val formattedAmountDisplay: StateFlow<String> = _digitString.map { digits ->
+        val paddedDigits = digits.padStart(3, '0')
+        val integerPart = paddedDigits.substring(0, paddedDigits.length - 2)
+        val decimalPart = paddedDigits.substring(paddedDigits.length - 2)
+        
+        // Format with thousand separators for better readability
+        val formatter = DecimalFormat("#,##0")
+        val formattedInteger = formatter.format(integerPart.toLongOrNull() ?: 0L)
 
-    private val _isPaymentEnabled = MutableStateFlow(false)
-    val isPaymentEnabled: StateFlow<Boolean> = _isPaymentEnabled
+        "$formattedInteger.$decimalPart"
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "0.00")
 
-    init {
-        updateDisplayAndAmountState()
-    }
+    // Derived state to enable/disable the payment button
+    val isPaymentEnabled: StateFlow<Boolean> = currentAmount.map { it > BigDecimal.ZERO }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
 
     fun onDigitPressed(digit: Char) {
-        if (currentDigitIndex < _inputDigits.value.size) {
-            val updatedList = _inputDigits.value.toMutableList()
-            updatedList[currentDigitIndex] = digit
-            _inputDigits.value = updatedList
-            currentDigitIndex++
-            updateDisplayAndAmountState()
+        if (_digitString.value.length < maxLength) {
+            _digitString.value += digit
         }
     }
 
     fun onDeletePressed() {
-        if (currentDigitIndex > 0) {
-            currentDigitIndex--
-            val updatedList = _inputDigits.value.toMutableList()
-            updatedList[currentDigitIndex] = '_'
-            _inputDigits.value = updatedList
-            updateDisplayAndAmountState()
-        }
-    }
-
-    private fun updateDisplayAndAmountState() {
-        val integerPart = _inputDigits.value.subList(0, 3).joinToString("")
-        val decimalPart = _inputDigits.value.subList(3, 5).joinToString("")
-        _formattedAmountDisplay.value = "$integerPart.$decimalPart"
-
-        // Calculate actual amount
-        val rawAmountString = _inputDigits.value.joinToString("").replace('_', '0')
-        _currentAmount.value = try {
-            BigDecimal(rawAmountString).movePointLeft(2) // _ _ _ . _ _ means 2 decimal places
-        } catch (e: NumberFormatException) {
-            BigDecimal.ZERO
-        }
-
-        // Validate payment enabled state
-        _isPaymentEnabled.value = (currentDigitIndex > 0 && _currentAmount.value > BigDecimal.ZERO)
+        _digitString.value = _digitString.value.dropLast(1)
     }
 
     fun resetInput() {
-        _inputDigits.value = MutableList(5) { '_' }
-        currentDigitIndex = 0
-        updateDisplayAndAmountState()
+        _digitString.value = ""
     }
 }

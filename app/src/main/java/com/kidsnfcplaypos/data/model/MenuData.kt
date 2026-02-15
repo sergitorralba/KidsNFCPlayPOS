@@ -17,6 +17,7 @@ data class MenuItem(
 data class SubCategory(
     val id: String,
     val nameStringResourceName: String, // Resource name for localized string (e.g., "subcategory_cafe_drinks")
+    val displayName: String, // New field for the user-facing name
     val items: List<MenuItem>
 )
 
@@ -25,5 +26,6 @@ data class SubCategory(
 data class MenuCategory(
     val id: String,
     val nameStringResourceName: String, // Resource name for localized string (e.g., "category_cafe")
+    val displayName: String, // New field for the user-facing name
     val subCategories: List<SubCategory>
 )

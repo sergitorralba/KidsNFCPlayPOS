@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,7 +26,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback {
+class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPool.OnLoadCompleteListener {
 
     private var _binding: FragmentPaymentSimulationBinding? = null
     private val binding get() = _binding!!
@@ -37,11 +38,16 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback {
     private lateinit var vibrator: Vibrator
     private lateinit var soundPool: SoundPool
     private var beepSoundId: Int = 0
+    private var isSoundLoaded = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(context)
+        if (nfcAdapter == null) {
+            Toast.makeText(context, "NFC is not available on this device.", Toast.LENGTH_LONG).show()
+        }
+
 
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -57,6 +63,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback {
             @Suppress("DEPRECATION")
             SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         }
+        soundPool.setOnLoadCompleteListener(this)
         beepSoundId = soundPool.load(context, R.raw.beep, 1) // Assuming you have a beep.wav in res/raw
     }
 
@@ -141,7 +148,9 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback {
             vibrator.vibrate(200)
         }
         // Beep
-        soundPool.play(beepSoundId, 1f, 1f, 1, 0, 1f)
+        if (isSoundLoaded) {
+            soundPool.play(beepSoundId, 1f, 1f, 1, 0, 1f)
+        }
     }
 
     override fun onResume() {
@@ -167,5 +176,11 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback {
         super.onDestroyView()
         _binding = null
         soundPool.release()
+    }
+
+    override fun onLoadComplete(soundPool: SoundPool?, sampleId: Int, status: Int) {
+        if (status == 0) {
+            isSoundLoaded = true
+        }
     }
 }

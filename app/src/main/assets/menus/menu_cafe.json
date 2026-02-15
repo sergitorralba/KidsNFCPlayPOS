@@ -1,10 +1,12 @@
 {
   "id": "cafe",
   "nameStringResourceName": "category_cafe",
+  "displayName": "Cafe",
   "subCategories": [
     {
       "id": "cafe_drinks",
       "nameStringResourceName": "subcategory_cafe_drinks",
+      "displayName": "Drinks",
       "items": [
         { "id": "cafe_coffee", "nameStringResourceName": "menu_item_cafe_coffee", "price": 2.50 },
         { "id": "cafe_tea", "nameStringResourceName": "menu_item_cafe_tea", "price": 2.00 }
@@ -13,6 +15,7 @@
     {
       "id": "cafe_food",
       "nameStringResourceName": "subcategory_cafe_food",
+      "displayName": "Snacks",
       "items": [
         { "id": "cafe_muffin", "nameStringResourceName": "menu_item_cafe_muffin", "price": 3.00 },
         { "id": "cafe_croissant", "nameStringResourceName": "menu_item_cafe_croissant", "price": 2.75 }

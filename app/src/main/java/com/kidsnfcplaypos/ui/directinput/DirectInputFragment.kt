@@ -21,8 +21,6 @@ class DirectInputFragment : Fragment() {
 
     private val viewModel: DirectInputViewModel by viewModels()
 
-    private lateinit var digitTextViews: List<TextView>
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -33,14 +31,6 @@ class DirectInputFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        digitTextViews = listOf(
-            binding.intDigit1,
-            binding.intDigit2,
-            binding.intDigit3,
-            binding.decDigit1,
-            binding.decDigit2
-        )
 
         setupKeypadListeners()
         observeViewModel()
@@ -77,15 +67,7 @@ class DirectInputFragment : Fragment() {
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.formattedAmountDisplay.collectLatest { displayString ->
-                // Update individual TextViews based on the displayString
-                // Example: "___.__" -> ['_', '_', '_', '.', '_', '_']
-                // We need to map this to the correct TextViews, skipping the fixed decimal point
-                val chars = displayString.filter { it != '.' } // Remove decimal point from chars to map
-                digitTextViews.forEachIndexed { index, textView ->
-                    if (index < chars.size) {
-                        textView.text = chars[index].toString()
-                    }
-                }
+                binding.amountDisplayText.text = displayString
             }
         }
 

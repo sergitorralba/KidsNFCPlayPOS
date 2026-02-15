@@ -3,6 +3,9 @@ package com.kidsnfcplaypos.ui.calculator
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.Locale
 import java.math.BigDecimal
 import java.math.MathContext
 
@@ -192,17 +195,10 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun formatNumber(number: BigDecimal): String {
-        // Use a DecimalFormat for clean display without trailing zeros if possible,
-        // but retain two decimal places if explicitly entered
-        val formatter = DecimalFormat("0.##", DecimalFormatSymbols(Locale.getDefault()))
-        formatter.minimumFractionDigits = if (hasDecimal || number.scale() > 0) 2 else 0 // Ensure 2 decimal places if needed
-
-        // For internal calculations, we want to ensure consistent two decimal places for currency
-        // But for display, we want to be smart.
-        // Let's re-think this formatting for display.
-        // For a kid's calculator, always showing two decimal places might be clearer for money.
-        // Let's adjust to always show two decimal places for the final display amount.
-        return String.format(Locale.getDefault(), "%.2f", number)
+        // Always show two decimal places for monetary display, as it's clearer for kids.
+        val symbols = DecimalFormatSymbols(Locale.getDefault())
+        val formatter = DecimalFormat("0.00", symbols)
+        return formatter.format(number)
     }
 
 }
