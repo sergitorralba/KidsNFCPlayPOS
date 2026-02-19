@@ -8,10 +8,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.content.SharedPreferences
+import android.view.View
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var navController: NavController
+    private lateinit var bottomNav: BottomNavigationView
+
+    private val prefs by lazy {
+        getSharedPreferences("app_prefs", MODE_PRIVATE)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +43,30 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         // Connect the BottomNavigationView with the NavController
-        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_nav)
+        bottomNav = findViewById(R.id.bottom_nav)
         bottomNav.setupWithNavController(navController)
+
+        updateNavVisibility()
+        prefs.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun updateNavVisibility() {
+        val showCalculator = prefs.getBoolean("feature_calculator", true)
+        val showDirectInput = prefs.getBoolean("feature_direct_input", true)
+
+        bottomNav.menu.findItem(R.id.calculatorFragment).isVisible = showCalculator
+        bottomNav.menu.findItem(R.id.directInputFragment).isVisible = showDirectInput
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        if (key == "feature_calculator" || key == "feature_direct_input") {
+            updateNavVisibility()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     // This is needed to handle the "Up" button in the toolbar

@@ -89,6 +89,10 @@ class ShopSelectionFragment : Fragment() {
                         showLanguageSelectionDialog()
                         true
                     }
+                    R.id.action_settings -> {
+                        findNavController().navigate(R.id.action_shopSelectionFragment_to_settingsFragment)
+                        true
+                    }
                     else -> false
                 }
             }

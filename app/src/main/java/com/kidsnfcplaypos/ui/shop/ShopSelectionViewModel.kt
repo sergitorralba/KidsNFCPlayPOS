@@ -36,7 +36,8 @@ class ShopSelectionViewModel(
     private val resourceResolver: ResourceResolver
 ) : AndroidViewModel(application) {
 
-    private val prefs = application.getSharedPreferences("shop_prefs", android.content.Context.MODE_PRIVATE)
+    private val shopPrefs = application.getSharedPreferences("shop_prefs", android.content.Context.MODE_PRIVATE)
+    private val appPrefs = application.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
     private val KEY_SELECTED_MENU = "selected_menu_id"
 
     private fun getCurrencyFormatter(): NumberFormat {
@@ -55,13 +56,21 @@ class ShopSelectionViewModel(
 
     // --- Public-facing Derived StateFlows ---
     val uiState: StateFlow<ShopSelectionUiState> = combine(_uiState, _refreshTrigger) { state, _ ->
-        // When refreshTrigger changes, update the localized names in the available menus list
-        state.copy(availableMenus = _allMenuCategories.map {
+        // Get dynamic preference
+        val showRestaurant = appPrefs.getBoolean("feature_restaurant", true)
+        
+        val filteredCategories = if (showRestaurant) {
+            _allMenuCategories
+        } else {
+            _allMenuCategories.filter { it.id != "restaurant" }
+        }
+
+        state.copy(availableMenus = filteredCategories.map {
             MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName))
         })
     }.stateIn(viewModelScope, SharingStarted.Eagerly, _uiState.value)
 
-    val shopListItems: StateFlow<List<ShopListItem>> = combine(_uiState, _cart, _refreshTrigger) { state, cart, _ ->
+    val shopListItems: StateFlow<List<ShopListItem>> = combine(uiState, _cart, _refreshTrigger) { state, cart, _ ->
         Log.d("ShopSelectionVM", "Calculating shopListItems for menu: ${state.selectedMenuId}")
         val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
         val formatter = getCurrencyFormatter()
@@ -86,7 +95,7 @@ class ShopSelectionViewModel(
         initialValue = emptyList()
     )
 
-    val totalAmount: StateFlow<BigDecimal> = combine(_uiState, _cart) { state, cart ->
+    val totalAmount: StateFlow<BigDecimal> = combine(uiState, _cart) { state, cart ->
         var total = BigDecimal.ZERO
         val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
         if (selectedMenu != null) {
@@ -104,7 +113,7 @@ class ShopSelectionViewModel(
         initialValue = BigDecimal.ZERO
     )
 
-    val cartItems: StateFlow<List<ItemListItem>> = combine(_uiState, _cart, _refreshTrigger) { state, cart, _ ->
+    val cartItems: StateFlow<List<ItemListItem>> = combine(uiState, _cart, _refreshTrigger) { state, cart, _ ->
         val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
         val formatter = getCurrencyFormatter()
         if (selectedMenu == null) return@combine emptyList<ItemListItem>()
@@ -158,7 +167,7 @@ class ShopSelectionViewModel(
         Log.d("ShopSelectionVM", "Selecting menu: $menuId")
         if (_allMenuCategories.any { it.id == menuId }) {
             _uiState.value = _uiState.value.copy(selectedMenuId = menuId)
-            prefs.edit().putString(KEY_SELECTED_MENU, menuId).apply()
+            shopPrefs.edit().putString(KEY_SELECTED_MENU, menuId).apply()
         }
     }
 
@@ -171,7 +180,7 @@ class ShopSelectionViewModel(
         viewModelScope.launch {
             menuRepository.loadAllMenuCategories().onSuccess { categories ->
                 _allMenuCategories = categories
-                val savedMenuId = prefs.getString(KEY_SELECTED_MENU, null)
+                val savedMenuId = shopPrefs.getString(KEY_SELECTED_MENU, null)
                 val initialMenuId = if (categories.any { it.id == savedMenuId }) {
                     savedMenuId
                 } else {
@@ -181,7 +190,6 @@ class ShopSelectionViewModel(
                 Log.d("ShopSelectionVM", "Menus loaded. Initial selection: $initialMenuId")
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    availableMenus = categories.map { MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName)) },
                     selectedMenuId = initialMenuId
                 )
             }.onFailure { throwable ->
