@@ -34,7 +34,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
     private var _binding: FragmentPaymentSimulationBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PaymentViewModel by viewModels()
+    private val viewModel: PaymentViewModel by activityViewModels()
     private val args: PaymentSimulationFragmentArgs by navArgs()
 
     private var nfcAdapter: NfcAdapter? = null
