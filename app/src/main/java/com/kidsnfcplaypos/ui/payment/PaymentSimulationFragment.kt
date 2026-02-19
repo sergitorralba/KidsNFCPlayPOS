@@ -161,7 +161,22 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
             viewModel.eventFlow.collectLatest { event ->
                 when (event) {
                     PaymentEvent.TriggerNfcFeedback -> triggerNfcFeedback()
-                    PaymentEvent.PaymentCompleted -> findNavController().popBackStack()
+                    PaymentEvent.PaymentCompleted -> {
+                        // After payment, we want to go back to the "clean" state.
+                        // If we came from a Summary screen, we should pop all the way back to the main feature screen.
+                        val currentDestId = findNavController().currentDestination?.id
+                        
+                        // We check the UI state to see if it was a success.
+                        // If it was successful, we pop up to the main entry points.
+                        if (viewModel.uiState.value is PaymentUiState.Success) {
+                            findNavController().popBackStack(R.id.shopSelectionFragment, false)
+                            findNavController().popBackStack(R.id.calculatorFragment, false)
+                            findNavController().popBackStack(R.id.directInputFragment, false)
+                        } else {
+                            // If it was a failure, just go back one step so they can try again
+                            findNavController().popBackStack()
+                        }
+                    }
                 }
             }
         }
