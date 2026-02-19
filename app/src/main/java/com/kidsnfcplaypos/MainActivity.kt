@@ -65,10 +65,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         bottomNav.menu.findItem(R.id.calculatorFragment).isVisible = showCalculator
         bottomNav.menu.findItem(R.id.directInputFragment).isVisible = true
 
+        // We only enforce rules if the CURRENT screen is the one we are hiding.
+        // During normal payment flows, we don't want to interfere.
         enforceFeatureRules(navController.currentDestination?.id)
     }
 
     private fun enforceFeatureRules(currentDestId: Int?) {
+        // We only want to force navigation IF the user is currently looking at a screen
+        // that has been disabled in settings.
         val showShop = prefs.getBoolean("feature_shop", true)
         val showCalculator = prefs.getBoolean("feature_calculator", true)
 
