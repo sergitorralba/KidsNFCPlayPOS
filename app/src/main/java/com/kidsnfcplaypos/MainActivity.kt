@@ -64,7 +64,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         val currentDestId = navController.currentDestination?.id
         if ((currentDestId == R.id.shopSelectionFragment && !showShop) ||
             (currentDestId == R.id.calculatorFragment && !showCalculator)) {
-            navController.navigate(R.id.directInputFragment)
+            
+            // Use a post to ensure navigation happens after the preference change is processed
+            window.decorView.post {
+                if (navController.currentDestination?.id != R.id.directInputFragment) {
+                    navController.navigate(R.id.directInputFragment)
+                }
+            }
         }
     }
 

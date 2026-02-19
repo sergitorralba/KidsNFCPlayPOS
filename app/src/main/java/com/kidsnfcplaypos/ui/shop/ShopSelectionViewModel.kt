@@ -56,14 +56,8 @@ class ShopSelectionViewModel(
 
     // --- Public-facing Derived StateFlows ---
     val uiState: StateFlow<ShopSelectionUiState> = combine(_uiState, _refreshTrigger) { state, _ ->
-        // Get dynamic preference
-        val showRestaurant = appPrefs.getBoolean("feature_restaurant", true)
-        
-        val filteredCategories = if (showRestaurant) {
-            _allMenuCategories
-        } else {
-            _allMenuCategories.filter { it.id != "restaurant" }
-        }
+        // Use all menus since individual toggling was removed in favor of whole feature toggle
+        val filteredCategories = _allMenuCategories
 
         state.copy(availableMenus = filteredCategories.map {
             MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName))
