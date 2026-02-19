@@ -94,9 +94,7 @@ class CalculatorSummaryFragment : Fragment() {
         // Listen for successful payment to reset the calculator
         viewLifecycleOwner.lifecycleScope.launch {
             paymentViewModel.eventFlow.collectLatest { event ->
-                if (event == PaymentEvent.PaymentSuccess) {
-                    viewModel.resetAll()
-                }
+                // Handled in CalculatorFragment via shouldResetPOS
             }
         }
     }
