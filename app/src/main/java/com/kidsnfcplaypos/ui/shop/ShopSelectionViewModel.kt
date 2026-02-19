@@ -154,6 +154,7 @@ class ShopSelectionViewModel(
     }
 
     fun clearCart() {
+        Log.d("ShopSelectionVM", "clearCart called! Current cart size: ${_cart.value.size}")
         _cart.value = emptyMap()
     }
 

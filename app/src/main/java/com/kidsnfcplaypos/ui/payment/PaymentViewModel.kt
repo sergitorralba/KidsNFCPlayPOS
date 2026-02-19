@@ -2,7 +2,9 @@ package com.kidsnfcplaypos.ui.payment
 
 import android.nfc.NfcAdapter
 import android.nfc.Tag
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -10,12 +12,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
-import androidx.lifecycle.ViewModelProvider
-import java.math.BigDecimal
 import com.kidsnfcplaypos.ui.shop.ShopSelectionViewModel
 import com.kidsnfcplaypos.ui.calculator.CalculatorViewModel
 import com.kidsnfcplaypos.ui.directinput.DirectInputViewModel
@@ -66,6 +65,7 @@ class PaymentViewModel(
                       NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK
 
     fun initiatePayment(amount: BigDecimal) {
+        Log.d("PaymentVM", "Initiating payment for: $amount")
         paymentAmount = amount
         _uiState.value = PaymentUiState.Idle
         nfcDetected = false
@@ -90,7 +90,8 @@ class PaymentViewModel(
             if (currentTime - lastTapTimeMillis < TAP_TIMEOUT_MS) {
                 tapCount++
                 if (tapCount >= 3) {
-                    isForcedFailure = true // Mark for failure but don't stop timer
+                    Log.d("PaymentVM", "Forced failure triggered!")
+                    isForcedFailure = true 
                 }
             } else {
                 tapCount = 1
@@ -100,8 +101,9 @@ class PaymentViewModel(
     }
 
     private fun startPaymentSimulation() {
-        simulationJob?.cancel() // Ensure no duplicate jobs
+        simulationJob?.cancel() 
         simulationJob = viewModelScope.launch {
+            Log.d("PaymentVM", "Starting simulation...")
             _uiState.value = PaymentUiState.Processing(PAYMENT_SIMULATION_DURATION_SECONDS)
             var remainingTime = PAYMENT_SIMULATION_DURATION_SECONDS
             while (remainingTime > 0) {
@@ -110,25 +112,26 @@ class PaymentViewModel(
                 _uiState.value = PaymentUiState.Processing(remainingTime)
             }
             
-            // Simulation finished, decide based on whether it was forced to fail
             if (isForcedFailure) {
+                Log.d("PaymentVM", "Simulation finished with FAILURE")
                 _uiState.value = PaymentUiState.Failure
             } else {
+                Log.d("PaymentVM", "Simulation finished with SUCCESS. Resetting values.")
                 _uiState.value = PaymentUiState.Success
+                
+                // RESET EVERYTHING IMMEDIATELY ON SUCCESS
+                // This ensures that even if the user hits the back button or kills the app,
+                // the state is already cleared.
+                shopViewModel.clearCart()
+                calculatorViewModel.resetAll()
+                directInputViewModel.resetInput()
             }
         }
     }
 
     fun onPaymentResultAcknowledged() {
-        // Called when user clicks "Accept" after success OR clicks something on failure
+        Log.d("PaymentVM", "Payment result acknowledged by user.")
         viewModelScope.launch {
-            if (_uiState.value is PaymentUiState.Success) {
-                // RESET EVERYTHING ON SUCCESS
-                shopViewModel.clearCart()
-                calculatorViewModel.resetAll()
-                directInputViewModel.resetInput()
-            }
-            // PaymentCompleted is emitted for both success and failure to navigate back
             _eventFlow.emit(PaymentEvent.PaymentCompleted)
         }
     }

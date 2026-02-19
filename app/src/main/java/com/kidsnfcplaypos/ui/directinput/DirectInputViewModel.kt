@@ -55,6 +55,7 @@ class DirectInputViewModel : ViewModel() {
     }
 
     fun resetInput() {
+        Log.d("DirectInputVM", "resetInput called! Current amount: ${currentAmount.value}")
         _digitString.value = ""
     }
 }

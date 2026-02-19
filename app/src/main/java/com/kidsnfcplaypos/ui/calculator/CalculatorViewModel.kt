@@ -160,6 +160,7 @@ class CalculatorViewModel : ViewModel() {
     }
 
     fun resetAll() {
+        Log.d("CalculatorVM", "resetAll called! Current tape size: ${_tape.value.size}")
         _tape.value = emptyList()
         _grandTotal.value = BigDecimal.ZERO
         _rawDigits.value = ""
