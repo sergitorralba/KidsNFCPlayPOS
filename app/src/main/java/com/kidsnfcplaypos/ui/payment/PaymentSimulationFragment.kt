@@ -30,12 +30,25 @@ import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
 
+import com.kidsnfcplaypos.ui.shop.ShopSelectionViewModel
+import com.kidsnfcplaypos.ui.calculator.CalculatorViewModel
+import com.kidsnfcplaypos.ui.directinput.DirectInputViewModel
+
 class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPool.OnLoadCompleteListener {
 
     private var _binding: FragmentPaymentSimulationBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: PaymentViewModel by activityViewModels()
+    private val shopViewModel: ShopSelectionViewModel by activityViewModels {
+        ShopSelectionViewModel.Factory(requireActivity().application)
+    }
+    private val calculatorViewModel: CalculatorViewModel by activityViewModels()
+    private val directInputViewModel: DirectInputViewModel by activityViewModels()
+
+    private val viewModel: PaymentViewModel by activityViewModels {
+        PaymentViewModel.Factory(shopViewModel, calculatorViewModel, directInputViewModel)
+    }
+    
     private val args: PaymentSimulationFragmentArgs by navArgs()
 
     private var nfcAdapter: NfcAdapter? = null

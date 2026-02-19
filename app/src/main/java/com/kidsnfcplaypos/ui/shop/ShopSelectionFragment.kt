@@ -35,8 +35,6 @@ class ShopSelectionFragment : Fragment() {
         ShopSelectionViewModel.Factory(requireActivity().application)
     }
 
-    private val paymentViewModel: PaymentViewModel by activityViewModels()
-
     private lateinit var shopCategoryAdapter: ShopCategoryAdapter
 
     override fun onCreateView(
@@ -131,17 +129,6 @@ class ShopSelectionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.totalAmount.collectLatest { total ->
                 binding.fabCheckout.visibility = if (total > BigDecimal.ZERO) View.VISIBLE else View.GONE
-            }
-        }
-
-        // Listen for persistent reset state
-        viewLifecycleOwner.lifecycleScope.launch {
-            paymentViewModel.shouldResetPOS.collectLatest { shouldReset ->
-                if (shouldReset) {
-                    Log.d("ShopSelectionFragment", "Resetting cart due to payment success")
-                    viewModel.clearCart()
-                    paymentViewModel.posResetConsumed()
-                }
             }
         }
     }

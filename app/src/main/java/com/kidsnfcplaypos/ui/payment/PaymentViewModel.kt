@@ -14,6 +14,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
+import androidx.lifecycle.ViewModelProvider
+import java.math.BigDecimal
+import com.kidsnfcplaypos.ui.shop.ShopSelectionViewModel
+import com.kidsnfcplaypos.ui.calculator.CalculatorViewModel
+import com.kidsnfcplaypos.ui.directinput.DirectInputViewModel
+
 sealed class PaymentUiState {
     object Idle : PaymentUiState() // Waiting for NFC or amount
     data class Processing(val remainingTimeSeconds: Int) : PaymentUiState() // 7-second simulation
@@ -27,7 +33,11 @@ sealed class PaymentEvent {
     object PaymentCompleted : PaymentEvent() // One-time event to navigate away
 }
 
-class PaymentViewModel : ViewModel() {
+class PaymentViewModel(
+    private val shopViewModel: ShopSelectionViewModel,
+    private val calculatorViewModel: CalculatorViewModel,
+    private val directInputViewModel: DirectInputViewModel
+) : ViewModel() {
 
     private val PAYMENT_SIMULATION_DURATION_SECONDS = 7
     private val TAP_TIMEOUT_MS = 500L // Time window for consecutive taps
@@ -39,11 +49,6 @@ class PaymentViewModel : ViewModel() {
     // One-time events
     private val _eventFlow = MutableSharedFlow<PaymentEvent>()
     val eventFlow: SharedFlow<PaymentEvent> = _eventFlow
-
-    // --- Reset Logic ---
-    // This state persists until consumed by the Shop or Calculator screens
-    private val _shouldResetPOS = MutableStateFlow(false)
-    val shouldResetPOS: StateFlow<Boolean> = _shouldResetPOS.asStateFlow()
 
     // Internal state for simulation
     private var paymentAmount: BigDecimal = BigDecimal.ZERO
@@ -118,14 +123,24 @@ class PaymentViewModel : ViewModel() {
         // Called when user clicks "Accept" after success OR clicks something on failure
         viewModelScope.launch {
             if (_uiState.value is PaymentUiState.Success) {
-                _shouldResetPOS.value = true
+                // RESET EVERYTHING ON SUCCESS
+                shopViewModel.clearCart()
+                calculatorViewModel.resetAll()
+                directInputViewModel.resetInput()
             }
             // PaymentCompleted is emitted for both success and failure to navigate back
             _eventFlow.emit(PaymentEvent.PaymentCompleted)
         }
     }
 
-    fun posResetConsumed() {
-        _shouldResetPOS.value = false
+    class Factory(
+        private val shopViewModel: ShopSelectionViewModel,
+        private val calculatorViewModel: CalculatorViewModel,
+        private val directInputViewModel: DirectInputViewModel
+    ) : ViewModelProvider.Factory {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return PaymentViewModel(shopViewModel, calculatorViewModel, directInputViewModel) as T
+        }
     }
 }

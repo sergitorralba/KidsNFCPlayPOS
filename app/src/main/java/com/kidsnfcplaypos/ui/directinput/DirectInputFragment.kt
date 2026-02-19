@@ -29,8 +29,6 @@ class DirectInputFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: DirectInputViewModel by viewModels()
-    
-    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,17 +103,6 @@ class DirectInputFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isPaymentEnabled.collectLatest { isEnabled ->
                 binding.btnEnter.isEnabled = isEnabled
-            }
-        }
-
-        // Listen for persistent reset state
-        viewLifecycleOwner.lifecycleScope.launch {
-            paymentViewModel.shouldResetPOS.collectLatest { shouldReset ->
-                if (shouldReset) {
-                    Log.d("DirectInputFragment", "Resetting input due to payment success")
-                    viewModel.resetInput()
-                    paymentViewModel.posResetConsumed()
-                }
             }
         }
     }

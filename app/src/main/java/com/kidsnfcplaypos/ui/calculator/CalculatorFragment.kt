@@ -17,7 +17,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentCalculatorBinding
-import com.kidsnfcplaypos.ui.payment.PaymentViewModel
 import com.kidsnfcplaypos.util.LanguageDialogHelper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -30,8 +29,6 @@ class CalculatorFragment : Fragment() {
 
     // Shared ViewModel with SummaryFragment
     private val viewModel: CalculatorViewModel by activityViewModels()
-    
-    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,17 +115,6 @@ class CalculatorFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.grandTotal.collectLatest { total ->
                 binding.btnPay.isEnabled = total != BigDecimal.ZERO || viewModel.tape.value.isNotEmpty()
-            }
-        }
-
-        // Listen for persistent reset state
-        viewLifecycleOwner.lifecycleScope.launch {
-            paymentViewModel.shouldResetPOS.collectLatest { shouldReset ->
-                if (shouldReset) {
-                    Log.d("CalculatorFragment", "Resetting calculator due to payment success")
-                    viewModel.resetAll()
-                    paymentViewModel.posResetConsumed()
-                }
             }
         }
     }
