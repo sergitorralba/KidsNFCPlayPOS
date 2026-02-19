@@ -47,7 +47,14 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         bottomNav.setupWithNavController(navController)
 
         updateNavVisibility()
+        
+        // Listen for preference changes
         prefs.registerOnSharedPreferenceChangeListener(this)
+        
+        // Listen for navigation changes to enforce visibility rules when returning from Settings
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            enforceFeatureRules(destination.id)
+        }
     }
 
     private fun updateNavVisibility() {
@@ -56,21 +63,24 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
 
         bottomNav.menu.findItem(R.id.shopSelectionFragment).isVisible = showShop
         bottomNav.menu.findItem(R.id.calculatorFragment).isVisible = showCalculator
-        
-        // Direct Input is always available
         bottomNav.menu.findItem(R.id.directInputFragment).isVisible = true
 
-        // Force navigation to Direct Input if the current feature is now hidden
-        val currentDestId = navController.currentDestination?.id
-        
+        enforceFeatureRules(navController.currentDestination?.id)
+    }
+
+    private fun enforceFeatureRules(currentDestId: Int?) {
+        val showShop = prefs.getBoolean("feature_shop", true)
+        val showCalculator = prefs.getBoolean("feature_calculator", true)
+
         val isCurrentShopRelated = currentDestId == R.id.shopSelectionFragment || currentDestId == R.id.cartSummaryFragment
         val isCurrentCalculatorRelated = currentDestId == R.id.calculatorFragment || currentDestId == R.id.calculatorSummaryFragment
 
         if ((isCurrentShopRelated && !showShop) || (isCurrentCalculatorRelated && !showCalculator)) {
-            // Post to ensure we don't navigate during a layout pass or while preferences are still applying
+            // Post navigation to avoid conflicts during destination changes
             window.decorView.post {
-                // Navigate to Direct Input and clear the backstack to prevent going back to a disabled screen
-                navController.navigate(R.id.directInputFragment)
+                if (navController.currentDestination?.id != R.id.directInputFragment) {
+                    navController.navigate(R.id.directInputFragment)
+                }
             }
         }
     }
@@ -86,7 +96,6 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         prefs.unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    // This is needed to handle the "Up" button in the toolbar
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
