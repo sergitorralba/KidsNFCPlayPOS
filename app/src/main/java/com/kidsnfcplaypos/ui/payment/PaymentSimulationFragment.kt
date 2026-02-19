@@ -145,6 +145,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
                 when (event) {
                     PaymentEvent.TriggerNfcFeedback -> triggerNfcFeedback()
                     PaymentEvent.PaymentCompleted -> findNavController().popBackStack()
+                    PaymentEvent.PaymentSuccess -> { /* No UI action needed here */ }
                 }
             }
         }
