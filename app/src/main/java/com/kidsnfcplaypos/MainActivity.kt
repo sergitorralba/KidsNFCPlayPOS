@@ -60,16 +60,17 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         // Direct Input is always available
         bottomNav.menu.findItem(R.id.directInputFragment).isVisible = true
 
-        // If the current destination is now hidden, navigate to Direct Input
+        // Force navigation to Direct Input if the current feature is now hidden
         val currentDestId = navController.currentDestination?.id
-        if ((currentDestId == R.id.shopSelectionFragment && !showShop) ||
-            (currentDestId == R.id.calculatorFragment && !showCalculator)) {
-            
-            // Use a post to ensure navigation happens after the preference change is processed
+        
+        val isCurrentShopRelated = currentDestId == R.id.shopSelectionFragment || currentDestId == R.id.cartSummaryFragment
+        val isCurrentCalculatorRelated = currentDestId == R.id.calculatorFragment || currentDestId == R.id.calculatorSummaryFragment
+
+        if ((isCurrentShopRelated && !showShop) || (isCurrentCalculatorRelated && !showCalculator)) {
+            // Post to ensure we don't navigate during a layout pass or while preferences are still applying
             window.decorView.post {
-                if (navController.currentDestination?.id != R.id.directInputFragment) {
-                    navController.navigate(R.id.directInputFragment)
-                }
+                // Navigate to Direct Input and clear the backstack to prevent going back to a disabled screen
+                navController.navigate(R.id.directInputFragment)
             }
         }
     }
