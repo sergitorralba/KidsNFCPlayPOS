@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kidsnfcplaypos.databinding.FragmentCalculatorSummaryBinding
 import com.kidsnfcplaypos.ui.payment.PaymentEvent
 import com.kidsnfcplaypos.ui.payment.PaymentViewModel
+import com.kidsnfcplaypos.ui.shop.ShopSelectionViewModel
+import com.kidsnfcplaypos.ui.directinput.DirectInputViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -25,10 +27,17 @@ class CalculatorSummaryFragment : Fragment() {
     private var _binding: FragmentCalculatorSummaryBinding? = null
     private val binding get() = _binding!!
 
-    // Share the ViewModel with the CalculatorFragment
-    private val viewModel: CalculatorViewModel by activityViewModels()
+    // Shared ViewModels
+    private val shopViewModel: ShopSelectionViewModel by activityViewModels {
+        ShopSelectionViewModel.Factory(requireActivity().application)
+    }
+    private val calculatorViewModel: CalculatorViewModel by activityViewModels()
+    private val directInputViewModel: DirectInputViewModel by activityViewModels()
 
-    private val paymentViewModel: PaymentViewModel by activityViewModels()
+    // Shared PaymentViewModel using the custom factory
+    private val paymentViewModel: PaymentViewModel by activityViewModels {
+        PaymentViewModel.Factory(shopViewModel, calculatorViewModel, directInputViewModel)
+    }
 
     private val currencyFormatter: NumberFormat by lazy {
         NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
@@ -60,7 +69,7 @@ class CalculatorSummaryFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.tape.collectLatest { tape: List<TapeEntry> ->
+            calculatorViewModel.tape.collectLatest { tape: List<TapeEntry> ->
                 adapter.submitList(tape)
             }
         }
@@ -68,12 +77,12 @@ class CalculatorSummaryFragment : Fragment() {
 
     private fun setupButtons() {
         binding.buttonCancel.setOnClickListener {
-            viewModel.resetAll()
+            calculatorViewModel.resetAll()
             findNavController().popBackStack()
         }
 
         binding.buttonPay.setOnClickListener {
-            val finalAmount = viewModel.grandTotal.value
+            val finalAmount = calculatorViewModel.grandTotal.value
             if (finalAmount > BigDecimal.ZERO) {
                 val action = CalculatorSummaryFragmentDirections
                     .actionCalculatorSummaryFragmentToPaymentSimulationFragment(
@@ -86,17 +95,13 @@ class CalculatorSummaryFragment : Fragment() {
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.grandTotal.collectLatest { total: BigDecimal ->
+            calculatorViewModel.grandTotal.collectLatest { total: BigDecimal ->
                 binding.textTotalAmount.text = currencyFormatter.format(total)
             }
         }
 
-        // Listen for successful payment to reset the calculator
-        viewLifecycleOwner.lifecycleScope.launch {
-            paymentViewModel.eventFlow.collectLatest { event ->
-                // Handled in CalculatorFragment via shouldResetPOS
-            }
-        }
+        // Listen for navigation changes via the payment event flow if needed,
+        // but the core logic is now centralized in PaymentViewModel.
     }
 
     override fun onDestroyView() {
