@@ -15,7 +15,7 @@ import java.math.BigDecimal
 
 sealed class PaymentUiState {
     object Idle : PaymentUiState() // Waiting for NFC or amount
-    data class Processing(val remainingTimeSeconds: Int) : PaymentUiState() // 10-second simulation
+    data class Processing(val remainingTimeSeconds: Int) : PaymentUiState() // 7-second simulation
     object Success : PaymentUiState()
     object Failure : PaymentUiState()
     object NfcTapDetected : PaymentUiState() // Intermediate state after first NFC tap
@@ -29,7 +29,7 @@ sealed class PaymentEvent {
 
 class PaymentViewModel : ViewModel() {
 
-    private val PAYMENT_SIMULATION_DURATION_SECONDS = 10
+    private val PAYMENT_SIMULATION_DURATION_SECONDS = 7
     private val FAILURE_SCREEN_DURATION_SECONDS = 5
     private val TAP_TIMEOUT_MS = 500L // Time window for consecutive taps
 
@@ -47,6 +47,7 @@ class PaymentViewModel : ViewModel() {
     private var nfcDetected = false
     private var tapCount = 0
     private var lastTapTimeMillis = 0L
+    private var isForcedFailure = false
 
     // For NFC ReaderMode (to be handled in Fragment due to NfcAdapter dependency)
     val readerFlags = NfcAdapter.FLAG_READER_NFC_A or
@@ -61,6 +62,7 @@ class PaymentViewModel : ViewModel() {
         nfcDetected = false
         tapCount = 0
         lastTapTimeMillis = 0L
+        isForcedFailure = false
         simulationJob?.cancel() // Cancel any ongoing simulation
     }
 
@@ -79,8 +81,7 @@ class PaymentViewModel : ViewModel() {
             if (currentTime - lastTapTimeMillis < TAP_TIMEOUT_MS) {
                 tapCount++
                 if (tapCount >= 3) {
-                    forcePaymentFailure()
-                    return
+                    isForcedFailure = true // Mark for failure but don't stop timer
                 }
             } else {
                 tapCount = 1
@@ -99,24 +100,21 @@ class PaymentViewModel : ViewModel() {
                 remainingTime--
                 _uiState.value = PaymentUiState.Processing(remainingTime)
             }
-            // If not forced failure, then it's a success
-            if (_uiState.value !is PaymentUiState.Failure) {
+            
+            // Simulation finished, decide based on whether it was forced to fail
+            if (isForcedFailure) {
+                _uiState.value = PaymentUiState.Failure
+                // Auto-navigate away after a delay on failure
+                delay(FAILURE_SCREEN_DURATION_SECONDS * 1000L)
+                _eventFlow.emit(PaymentEvent.PaymentCompleted)
+            } else {
                 _uiState.value = PaymentUiState.Success
             }
         }
     }
 
-    private fun forcePaymentFailure() {
-        simulationJob?.cancel() // Stop ongoing simulation
-        _uiState.value = PaymentUiState.Failure
-        viewModelScope.launch {
-            delay(FAILURE_SCREEN_DURATION_SECONDS * 1000L)
-            _eventFlow.emit(PaymentEvent.PaymentCompleted) // Signal to navigate away
-        }
-    }
-
     fun onPaymentResultAcknowledged() {
-        // Called when user clicks "Accept" after success or after failure screen timeout
+        // Called when user clicks "Accept" after success
         viewModelScope.launch {
             if (_uiState.value is PaymentUiState.Success) {
                 _eventFlow.emit(PaymentEvent.PaymentSuccess)
