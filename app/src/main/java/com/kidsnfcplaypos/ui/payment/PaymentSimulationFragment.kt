@@ -162,19 +162,21 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
                 when (event) {
                     PaymentEvent.TriggerNfcFeedback -> triggerNfcFeedback()
                     PaymentEvent.PaymentCompleted -> {
-                        // After payment, we want to go back to the "clean" state.
-                        // If we came from a Summary screen, we should pop all the way back to the main feature screen.
-                        val currentDestId = findNavController().currentDestination?.id
-                        
-                        // We check the UI state to see if it was a success.
-                        // If it was successful, we pop up to the main entry points.
                         if (viewModel.uiState.value is PaymentUiState.Success) {
-                            // If we were in Calculator, we want to stay in Calculator but skip the Summary screen
-                            if (!findNavController().popBackStack(R.id.calculatorFragment, false)) {
-                                // If not in calculator, try shop
-                                if (!findNavController().popBackStack(R.id.shopSelectionFragment, false)) {
-                                    // Otherwise just go back to wherever (Direct Input)
-                                    findNavController().popBackStack()
+                            // Find the correct screen to return to based on where we are in the graph.
+                            // We use findNavController().popBackStack(destinationId, inclusive) 
+                            // to jump back to the entry point.
+                            
+                            val nav = findNavController()
+                            
+                            // Check for Shop entry point
+                            val poppedShop = nav.popBackStack(R.id.shopSelectionFragment, false)
+                            if (!poppedShop) {
+                                // If not shop, check for Calculator entry point
+                                val poppedCalc = nav.popBackStack(R.id.calculatorFragment, false)
+                                if (!poppedCalc) {
+                                    // If not shop or calc, just go back once (Direct Input)
+                                    nav.popBackStack()
                                 }
                             }
                         } else {
