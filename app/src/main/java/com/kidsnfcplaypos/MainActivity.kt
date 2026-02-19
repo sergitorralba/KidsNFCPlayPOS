@@ -51,15 +51,18 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun updateNavVisibility() {
+        val showShop = prefs.getBoolean("feature_shop", true)
         val showCalculator = prefs.getBoolean("feature_calculator", true)
-        val showDirectInput = prefs.getBoolean("feature_direct_input", true)
 
+        bottomNav.menu.findItem(R.id.shopSelectionFragment).isVisible = showShop
         bottomNav.menu.findItem(R.id.calculatorFragment).isVisible = showCalculator
-        bottomNav.menu.findItem(R.id.directInputFragment).isVisible = showDirectInput
+        
+        // Direct Input is always available
+        bottomNav.menu.findItem(R.id.directInputFragment).isVisible = true
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        if (key == "feature_calculator" || key == "feature_direct_input") {
+        if (key == "feature_shop" || key == "feature_calculator") {
             updateNavVisibility()
         }
     }
@@ -74,4 +77,3 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
-

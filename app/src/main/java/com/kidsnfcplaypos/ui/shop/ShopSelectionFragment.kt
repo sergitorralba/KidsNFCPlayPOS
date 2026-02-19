@@ -12,7 +12,6 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -21,13 +20,10 @@ import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentShopSelectionBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
 import java.math.BigDecimal
-
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.kidsnfcplaypos.ui.payment.PaymentEvent
 import com.kidsnfcplaypos.ui.payment.PaymentViewModel
-import com.kidsnfcplaypos.util.LocaleManager
+import com.kidsnfcplaypos.util.LanguageDialogHelper
 
 class ShopSelectionFragment : Fragment() {
 
@@ -86,7 +82,7 @@ class ShopSelectionFragment : Fragment() {
                         true
                     }
                     R.id.action_change_language -> {
-                        showLanguageSelectionDialog()
+                        LanguageDialogHelper.showLanguageSelectionDialog(requireContext(), activity)
                         true
                     }
                     R.id.action_settings -> {
@@ -99,22 +95,7 @@ class ShopSelectionFragment : Fragment() {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    private fun showLanguageSelectionDialog() {
-        val languages = arrayOf("English", "Español", "Nederlands", "Català")
-        val localeTags = arrayOf("en", "es", "nl", "ca")
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(getString(R.string.select_language_title))
-            .setItems(languages) { _, which ->
-                val selectedLocaleTag = localeTags[which]
-                LocaleManager.saveLocale(requireContext(), selectedLocaleTag)
-                activity?.recreate()
-            }
-            .show()
-    }
-
     private fun setupRecyclerView() {
-        // Instantiate the adapter, passing lambdas that call the ViewModel
         shopCategoryAdapter = ShopCategoryAdapter(
             onAddItem = { menuItem ->
                 viewModel.addItem(menuItem.id)
@@ -131,33 +112,27 @@ class ShopSelectionFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        // This coroutine will handle the overall screen state (loading and errors)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collectLatest { uiState ->
                 binding.progressBar.visibility = if (uiState.isLoading) View.VISIBLE else View.GONE
-
                 if (!uiState.error.isNullOrBlank()) {
                     Log.e("ShopSelectionFragment", "Error: ${uiState.error}")
-                    // TODO: Show a more user-friendly error message
                 }
             }
         }
 
-        // This new, separate coroutine will handle submitting the list to the adapter
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.shopListItems.collectLatest { shopList ->
                 shopCategoryAdapter.submitList(shopList)
             }
         }
 
-        // This new coroutine will handle the payment button visibility
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.totalAmount.collectLatest { total ->
                 binding.fabCheckout.visibility = if (total > BigDecimal.ZERO) View.VISIBLE else View.GONE
             }
         }
 
-        // Listen for successful payment to clear the cart
         viewLifecycleOwner.lifecycleScope.launch {
             paymentViewModel.eventFlow.collectLatest { event ->
                 if (event == PaymentEvent.PaymentSuccess) {

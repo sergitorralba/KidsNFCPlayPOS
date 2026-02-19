@@ -29,21 +29,16 @@ class SettingsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Load current state
-        binding.switchRestaurant.isChecked = prefs.getBoolean("feature_restaurant", true)
+        binding.switchShop.isChecked = prefs.getBoolean("feature_shop", true)
         binding.switchCalculator.isChecked = prefs.getBoolean("feature_calculator", true)
-        binding.switchDirectInput.isChecked = prefs.getBoolean("feature_direct_input", true)
 
         // Save on change
-        binding.switchRestaurant.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("feature_restaurant", isChecked).apply()
+        binding.switchShop.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean("feature_shop", isChecked).apply()
         }
 
         binding.switchCalculator.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean("feature_calculator", isChecked).apply()
-        }
-
-        binding.switchDirectInput.setOnCheckedChangeListener { _, isChecked ->
-            prefs.edit().putBoolean("feature_direct_input", isChecked).apply()
         }
     }
 

@@ -2,15 +2,21 @@ package com.kidsnfcplaypos.ui.directinput
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentDirectInputBinding
+import com.kidsnfcplaypos.util.LanguageDialogHelper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -32,12 +38,35 @@ class DirectInputFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupMenu()
         setupKeypadListeners()
         observeViewModel()
     }
 
+    private fun setupMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.settings_only_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_change_language -> {
+                        LanguageDialogHelper.showLanguageSelectionDialog(requireContext(), activity)
+                        true
+                    }
+                    R.id.action_settings -> {
+                        findNavController().navigate(R.id.settingsFragment)
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
     private fun setupKeypadListeners() {
-        // Number buttons
         val numberButtons = listOf(
             binding.btn0, binding.btn1, binding.btn2, binding.btn3, binding.btn4,
             binding.btn5, binding.btn6, binding.btn7, binding.btn8, binding.btn9
@@ -48,19 +77,17 @@ class DirectInputFragment : Fragment() {
             }
         }
 
-        // Delete button
         binding.btnDelete.setOnClickListener {
             viewModel.onDeletePressed()
         }
 
-        // Enter button
         binding.btnEnter.setOnClickListener {
             val amountToPay = viewModel.currentAmount.value
             val action = DirectInputFragmentDirections.actionDirectInputFragmentToPaymentSimulationFragment(
                 amountToPay.toPlainString()
             )
             findNavController().navigate(action)
-            viewModel.resetInput() // Reset input after navigation
+            viewModel.resetInput()
         }
     }
 
