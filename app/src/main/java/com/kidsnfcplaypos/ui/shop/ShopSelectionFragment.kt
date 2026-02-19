@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentShopSelectionBinding
@@ -24,13 +24,16 @@ import kotlinx.coroutines.launch
 
 import java.math.BigDecimal
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kidsnfcplaypos.util.LocaleManager
+
 class ShopSelectionFragment : Fragment() {
 
     private var _binding: FragmentShopSelectionBinding? = null
     private val binding get() = _binding!!
 
     // Use the custom factory to instantiate the ViewModel
-    private val viewModel: ShopSelectionViewModel by viewModels {
+    private val viewModel: ShopSelectionViewModel by activityViewModels {
         ShopSelectionViewModel.Factory(requireActivity().application)
     }
 
@@ -47,6 +50,7 @@ class ShopSelectionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.refreshLocale() // Ensure strings are fresh (e.g., after locale change)
         setupMenu()
         setupRecyclerView()
         setupPaymentButton()
@@ -58,9 +62,7 @@ class ShopSelectionFragment : Fragment() {
             val totalAmount = viewModel.totalAmount.value
             if (totalAmount > BigDecimal.ZERO) {
                 val action = ShopSelectionFragmentDirections
-                    .actionShopSelectionFragmentToPaymentSimulationFragment(
-                        totalAmount.toPlainString()
-                    )
+                    .actionShopSelectionFragmentToCartSummaryFragment()
                 findNavController().navigate(action)
             }
         }
@@ -79,10 +81,28 @@ class ShopSelectionFragment : Fragment() {
                         MenuSelectionBottomSheet().show(childFragmentManager, MenuSelectionBottomSheet.TAG)
                         true
                     }
+                    R.id.action_change_language -> {
+                        showLanguageSelectionDialog()
+                        true
+                    }
                     else -> false
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private fun showLanguageSelectionDialog() {
+        val languages = arrayOf("English", "Español", "Nederlands", "Català")
+        val localeTags = arrayOf("en", "es", "nl", "ca")
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.select_language_title))
+            .setItems(languages) { _, which ->
+                val selectedLocaleTag = localeTags[which]
+                LocaleManager.saveLocale(requireContext(), selectedLocaleTag)
+                activity?.recreate()
+            }
+            .show()
     }
 
     private fun setupRecyclerView() {

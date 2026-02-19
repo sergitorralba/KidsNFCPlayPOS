@@ -1,0 +1,28 @@
+{
+  "id": "fruit",
+  "nameStringResourceName": "category_fruit",
+  "displayName": "Fruit Shop",
+  "subCategories": [
+    {
+      "id": "fruit_fresh",
+      "nameStringResourceName": "subcategory_fruit_fresh",
+      "displayName": "Fresh Fruit",
+      "items": [
+        { "id": "fruit_apple", "nameStringResourceName": "menu_item_fruit_apple", "price": 0.80 },
+        { "id": "fruit_banana", "nameStringResourceName": "menu_item_fruit_banana", "price": 0.50 },
+        { "id": "fruit_orange", "nameStringResourceName": "menu_item_fruit_orange", "price": 0.70 },
+        { "id": "fruit_strawberry", "nameStringResourceName": "menu_item_fruit_strawberry", "price": 3.00 },
+        { "id": "fruit_grapes", "nameStringResourceName": "menu_item_fruit_grapes", "price": 2.50 },
+        { "id": "fruit_watermelon", "nameStringResourceName": "menu_item_fruit_watermelon", "price": 4.00 },
+        { "id": "fruit_pear", "nameStringResourceName": "menu_item_fruit_pear", "price": 0.90 },
+        { "id": "fruit_kiwi", "nameStringResourceName": "menu_item_fruit_kiwi", "price": 1.20 },
+        { "id": "fruit_pineapple", "nameStringResourceName": "menu_item_fruit_pineapple", "price": 3.50 },
+        { "id": "fruit_mango", "nameStringResourceName": "menu_item_fruit_mango", "price": 2.00 },
+        { "id": "fruit_blueberry", "nameStringResourceName": "menu_item_fruit_blueberry", "price": 4.50 },
+        { "id": "fruit_raspberry", "nameStringResourceName": "menu_item_fruit_raspberry", "price": 4.00 },
+        { "id": "fruit_cherry", "nameStringResourceName": "menu_item_fruit_cherry", "price": 5.00 },
+        { "id": "fruit_peach", "nameStringResourceName": "menu_item_fruit_peach", "price": 1.50 }
+      ]
+    }
+  ]
+}

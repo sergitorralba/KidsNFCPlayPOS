@@ -21,7 +21,7 @@ class ShopCategoryAdapter(
     class HeaderViewHolder(private val binding: ItemShopCategoryBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(headerItem: HeaderListItem) {
-            binding.categoryName.text = headerItem.subCategory.displayName
+            binding.categoryName.text = headerItem.localizedName
         }
     }
 

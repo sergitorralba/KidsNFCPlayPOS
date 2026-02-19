@@ -25,6 +25,8 @@ import com.kidsnfcplaypos.databinding.FragmentPaymentSimulationBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
+import java.text.NumberFormat
+import java.util.Locale
 
 class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPool.OnLoadCompleteListener {
 
@@ -39,6 +41,12 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
     private lateinit var soundPool: SoundPool
     private var beepSoundId: Int = 0
     private var isSoundLoaded = false
+
+    private val currencyFormatter: NumberFormat by lazy {
+        NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
+            currency = java.util.Currency.getInstance("EUR")
+        }
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -79,7 +87,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
         super.onViewCreated(view, savedInstanceState)
 
         val amountToPay = BigDecimal(args.amountToPay)
-        binding.textAmountToPay.text = String.format("$%.2f", amountToPay) // Format for display
+        binding.textAmountToPay.text = currencyFormatter.format(amountToPay)
         viewModel.initiatePayment(amountToPay)
 
         setupClickListeners()

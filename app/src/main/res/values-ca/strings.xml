@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">KidsNFCPlayPOS</string>
+
+    <!-- Categories de Menú -->
+    <string name="category_cafe">Cafeteria</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_fruit">Fruiteria</string>
+
+    <!-- Subcategories -->
+    <string name="subcategory_cafe_drinks">Begudes</string>
+    <string name="subcategory_cafe_food">Menjar</string>
+    <string name="subcategory_restaurant_main">Plats Principals</string>
+    <string name="subcategory_restaurant_dessert">Postres</string>
+    <string name="subcategory_fruit_fresh">Fruita Fresca</string>
+
+    <!-- Articles de Cafeteria (14) -->
+    <string name="menu_item_cafe_coffee">Cafè</string>
+    <string name="menu_item_cafe_tea">Te</string>
+    <string name="menu_item_cafe_muffin">Muffin</string>
+    <string name="menu_item_cafe_croissant">Cruixent</string>
+    <string name="menu_item_cafe_juice">Suc</string>
+    <string name="menu_item_cafe_hot_chocolate">Xocolata Desfeta</string>
+    <string name="menu_item_cafe_cookie">Galeta</string>
+    <string name="menu_item_cafe_sandwich">Sandvitx</string>
+    <string name="menu_item_cafe_donut">Dònut</string>
+    <string name="menu_item_cafe_bagel">Bagel</string>
+    <string name="menu_item_cafe_milkshake">Batut</string>
+    <string name="menu_item_cafe_smoothie">Smoothie</string>
+    <string name="menu_item_cafe_brownie">Brownie</string>
+    <string name="menu_item_cafe_water">Aigua</string>
+
+    <!-- Articles de Restaurant (14) -->
+    <string name="menu_item_restaurant_burger">Hamburguesa</string>
+    <string name="menu_item_restaurant_pizza">Pizza</string>
+    <string name="menu_item_restaurant_cake">Pastís</string>
+    <string name="menu_item_restaurant_icecream">Gelat</string>
+    <string name="menu_item_restaurant_pasta">Pasta</string>
+    <string name="menu_item_restaurant_salad">Amanida</string>
+    <string name="menu_item_restaurant_fruit_salad">Macedònia</string>
+    <string name="menu_item_restaurant_pancakes">Pastissets</string>
+    <string name="menu_item_restaurant_nuggets">Nuggets de Pollastre</string>
+    <string name="menu_item_restaurant_hotdog">Frankfurt</string>
+    <string name="menu_item_restaurant_soup">Sopa</string>
+    <string name="menu_item_restaurant_tacos">Tacos</string>
+    <string name="menu_item_restaurant_pie">Pastís de Fruita</string>
+    <string name="menu_item_restaurant_pudding">Púding</string>
+
+    <!-- Articles de Fruiteria (14) -->
+    <string name="menu_item_fruit_apple">Poma</string>
+    <string name="menu_item_fruit_banana">Plàtan</string>
+    <string name="menu_item_fruit_orange">Taronja</string>
+    <string name="menu_item_fruit_strawberry">Maduixa</string>
+    <string name="menu_item_fruit_grapes">Raïm</string>
+    <string name="menu_item_fruit_watermelon">Sindria</string>
+    <string name="menu_item_fruit_pear">Pera</string>
+    <string name="menu_item_fruit_kiwi">Kiwi</string>
+    <string name="menu_item_fruit_pineapple">Pinya</string>
+    <string name="menu_item_fruit_mango">Mango</string>
+    <string name="menu_item_fruit_blueberry">Nabiu</string>
+    <string name="menu_item_fruit_raspberry">Gerds</string>
+    <string name="menu_item_fruit_cherry">Cirera</string>
+    <string name="menu_item_fruit_peach">Pressec</string>
+
+    <!-- Simulació de Pagament -->
+    <string name="payment_processing_timer">Queden %d segons</string>
+
+    <string name="select_language_title">Selecciona Idioma</string>
+</resources>

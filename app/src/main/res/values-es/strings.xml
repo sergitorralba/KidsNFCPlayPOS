@@ -1,31 +1,68 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">KidsNFCPlayPOS</string>
 
-    <!-- Menu Categories -->
+    <!-- Categorías de Menú -->
     <string name="category_cafe">Cafetería</string>
     <string name="category_restaurant">Restaurante</string>
+    <string name="category_fruit">Frutería</string>
 
-    <!-- Cafe Subcategories -->
+    <!-- Subcategorías -->
     <string name="subcategory_cafe_drinks">Bebidas</string>
     <string name="subcategory_cafe_food">Comida</string>
+    <string name="subcategory_restaurant_main">Platos Principales</string>
+    <string name="subcategory_restaurant_dessert">Postres</string>
+    <string name="subcategory_fruit_fresh">Fruta Fresca</string>
 
-    <!-- Cafe Menu Items -->
+    <!-- Artículos de Cafetería (14) -->
     <string name="menu_item_cafe_coffee">Café</string>
     <string name="menu_item_cafe_tea">Té</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
     <string name="menu_item_cafe_croissant">Croissant</string>
+    <string name="menu_item_cafe_juice">Zumo</string>
+    <string name="menu_item_cafe_hot_chocolate">Chocolate Caliente</string>
+    <string name="menu_item_cafe_cookie">Galleta</string>
+    <string name="menu_item_cafe_sandwich">Sándwich</string>
+    <string name="menu_item_cafe_donut">Donut</string>
+    <string name="menu_item_cafe_bagel">Bagel</string>
+    <string name="menu_item_cafe_milkshake">Batido</string>
+    <string name="menu_item_cafe_smoothie">Smoothie</string>
+    <string name="menu_item_cafe_brownie">Brownie</string>
+    <string name="menu_item_cafe_water">Agua</string>
 
-    <!-- Restaurant Subcategories -->
-    <string name="subcategory_restaurant_main">Platos Principales</string>
-    <string name="subcategory_restaurant_dessert">Postres</string>
-
-    <!-- Restaurant Menu Items -->
+    <!-- Artículos de Restaurante (14) -->
     <string name="menu_item_restaurant_burger">Hamburguesa</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Tarta</string>
     <string name="menu_item_restaurant_icecream">Helado</string>
+    <string name="menu_item_restaurant_pasta">Pasta</string>
+    <string name="menu_item_restaurant_salad">Ensalada</string>
+    <string name="menu_item_restaurant_fruit_salad">Macedonia</string>
+    <string name="menu_item_restaurant_pancakes">Tortitas</string>
+    <string name="menu_item_restaurant_nuggets">Nuggets de Pollo</string>
+    <string name="menu_item_restaurant_hotdog">Perrito Caliente</string>
+    <string name="menu_item_restaurant_soup">Sopa</string>
+    <string name="menu_item_restaurant_tacos">Tacos</string>
+    <string name="menu_item_restaurant_pie">Pastel</string>
+    <string name="menu_item_restaurant_pudding">Pudin</string>
 
-    <!-- Payment Simulation -->
-    <string name="payment_processing_timer">%d segundos restantes</string>
+    <!-- Artículos de Frutería (14) -->
+    <string name="menu_item_fruit_apple">Manzana</string>
+    <string name="menu_item_fruit_banana">Plátano</string>
+    <string name="menu_item_fruit_orange">Naranja</string>
+    <string name="menu_item_fruit_strawberry">Fresa</string>
+    <string name="menu_item_fruit_grapes">Uvas</string>
+    <string name="menu_item_fruit_watermelon">Sandía</string>
+    <string name="menu_item_fruit_pear">Pera</string>
+    <string name="menu_item_fruit_kiwi">Kiwi</string>
+    <string name="menu_item_fruit_pineapple">Piña</string>
+    <string name="menu_item_fruit_mango">Mango</string>
+    <string name="menu_item_fruit_blueberry">Arándano</string>
+    <string name="menu_item_fruit_raspberry">Frambuesa</string>
+    <string name="menu_item_fruit_cherry">Cereza</string>
+    <string name="menu_item_fruit_peach">Melocotón</string>
+
+    <!-- Simulación de Pago -->
+    <string name="payment_processing_timer">Quedan %d segundos</string>
+
+    <string name="select_language_title">Seleccionar Idioma</string>
 </resources>

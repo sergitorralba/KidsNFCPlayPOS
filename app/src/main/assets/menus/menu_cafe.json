@@ -9,7 +9,12 @@
       "displayName": "Drinks",
       "items": [
         { "id": "cafe_coffee", "nameStringResourceName": "menu_item_cafe_coffee", "price": 2.50 },
-        { "id": "cafe_tea", "nameStringResourceName": "menu_item_cafe_tea", "price": 2.00 }
+        { "id": "cafe_tea", "nameStringResourceName": "menu_item_cafe_tea", "price": 2.00 },
+        { "id": "cafe_juice", "nameStringResourceName": "menu_item_cafe_juice", "price": 1.50 },
+        { "id": "cafe_hot_chocolate", "nameStringResourceName": "menu_item_cafe_hot_chocolate", "price": 2.75 },
+        { "id": "cafe_milkshake", "nameStringResourceName": "menu_item_cafe_milkshake", "price": 3.50 },
+        { "id": "cafe_smoothie", "nameStringResourceName": "menu_item_cafe_smoothie", "price": 4.00 },
+        { "id": "cafe_water", "nameStringResourceName": "menu_item_cafe_water", "price": 1.00 }
       ]
     },
     {
@@ -18,7 +23,12 @@
       "displayName": "Snacks",
       "items": [
         { "id": "cafe_muffin", "nameStringResourceName": "menu_item_cafe_muffin", "price": 3.00 },
-        { "id": "cafe_croissant", "nameStringResourceName": "menu_item_cafe_croissant", "price": 2.75 }
+        { "id": "cafe_croissant", "nameStringResourceName": "menu_item_cafe_croissant", "price": 2.75 },
+        { "id": "cafe_cookie", "nameStringResourceName": "menu_item_cafe_cookie", "price": 1.00 },
+        { "id": "cafe_sandwich", "nameStringResourceName": "menu_item_cafe_sandwich", "price": 4.50 },
+        { "id": "cafe_donut", "nameStringResourceName": "menu_item_cafe_donut", "price": 1.50 },
+        { "id": "cafe_bagel", "nameStringResourceName": "menu_item_cafe_bagel", "price": 2.50 },
+        { "id": "cafe_brownie", "nameStringResourceName": "menu_item_cafe_brownie", "price": 2.00 }
       ]
     }
   ]

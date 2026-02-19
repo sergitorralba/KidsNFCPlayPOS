@@ -5,86 +5,54 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/shopSelectionFragment">
 
-    <!-- The main entry point to the shop flow, now an action to the nested graph -->
     <fragment
         android:id="@+id/shopSelectionFragment"
         android:name="com.kidsnfcplaypos.ui.shop.ShopSelectionFragment"
-        android:label="ShopSelectionFragment"
+        android:label="Play POS"
         tools:layout="@layout/fragment_shop_selection">
 
         <action
-            android:id="@+id/action_shopSelectionFragment_to_paymentSimulationFragment"
+            android:id="@+id/action_shopSelectionFragment_to_cartSummaryFragment"
+            app:destination="@id/cartSummaryFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_up" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/cartSummaryFragment"
+        android:name="com.kidsnfcplaypos.ui.shop.CartSummaryFragment"
+        android:label="Cart Summary"
+        tools:layout="@layout/fragment_cart_summary">
+
+        <action
+            android:id="@+id/action_cartSummaryFragment_to_paymentSimulationFragment"
             app:destination="@id/paymentSimulationFragment">
             <argument
                 android:name="amountToPay"
                 app:argType="string" />
         </action>
-
-
-        <!-- Action to navigate to the nested shop graph -->
-        <action
-            android:id="@+id/action_shopSelectionFragment_to_shop_nav_graph"
-            app:destination="@id/shop_nav_graph">
-            <argument
-                android:name="menuCategoryId"
-                app:argType="string" />
-        </action>
     </fragment>
-
-
-
-    <!-- NESTED GRAPH for the entire shopping flow (ShopDetail and CartSummary) -->
-    <navigation
-        android:id="@+id/shop_nav_graph"
-        app:startDestination="@id/shopDetailFragment">
-
-        <fragment
-            android:id="@+id/shopDetailFragment"
-            android:name="com.kidsnfcplaypos.ui.shop.ShopDetailFragment"
-            android:label="ShopDetailFragment"
-            tools:layout="@layout/fragment_shop_detail">
-            <!-- Action to navigate to the Cart Summary screen -->
-            <action
-                android:id="@+id/action_shopDetailFragment_to_cartSummaryFragment"
-                app:destination="@id/cartSummaryFragment"
-                app:enterAnim="@anim/slide_in_up"
-                app:exitAnim="@anim/slide_out_down"
-                app:popEnterAnim="@anim/slide_in_down"
-                app:popExitAnim="@anim/slide_out_up" />
-        </fragment>
-
-        <fragment
-            android:id="@+id/cartSummaryFragment"
-            android:name="com.kidsnfcplaypos.ui.shop.CartSummaryFragment"
-            android:label="CartSummaryFragment"
-            tools:layout="@layout/fragment_cart_summary">
-            <!-- Action to navigate back to the Shop Detail screen -->
-            <action
-                android:id="@+id/action_cartSummaryFragment_to_shopDetailFragment"
-                app:destination="@id/shopDetailFragment"
-                app:popUpToInclusive="true"
-                app:popUpTo="@id/shopDetailFragment" />
-            <!-- Action to navigate to the Payment Simulation screen -->
-            <action
-                android:id="@+id/action_cartSummaryFragment_to_paymentSimulationFragment"
-                app:destination="@id/paymentSimulationFragment">
-                <argument
-                    android:name="amountToPay"
-                    app:argType="string" />
-            </action>
-        </fragment>
-
-    </navigation>
 
     <fragment
         android:id="@+id/calculatorFragment"
         android:name="com.kidsnfcplaypos.ui.calculator.CalculatorFragment"
-        android:label="CalculatorFragment"
+        android:label="Calculator"
         tools:layout="@layout/fragment_calculator">
         <action
-            android:id="@+id/action_calculatorFragment_to_paymentSimulationFragment"
+            android:id="@+id/action_calculatorFragment_to_calculatorSummaryFragment"
+            app:destination="@id/calculatorSummaryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calculatorSummaryFragment"
+        android:name="com.kidsnfcplaypos.ui.calculator.CalculatorSummaryFragment"
+        android:label="Summary"
+        tools:layout="@layout/fragment_calculator_summary">
+        <action
+            android:id="@+id/action_calculatorSummaryFragment_to_paymentSimulationFragment"
             app:destination="@id/paymentSimulationFragment">
-            <!-- Add amountToPay argument here -->
             <argument
                 android:name="amountToPay"
                 app:argType="string" />
@@ -94,12 +62,11 @@
     <fragment
         android:id="@+id/directInputFragment"
         android:name="com.kidsnfcplaypos.ui.directinput.DirectInputFragment"
-        android:label="DirectInputFragment"
+        android:label="Direct Input"
         tools:layout="@layout/fragment_direct_input">
         <action
             android:id="@+id/action_directInputFragment_to_paymentSimulationFragment"
             app:destination="@id/paymentSimulationFragment">
-            <!-- Add amountToPay argument here -->
             <argument
                 android:name="amountToPay"
                 app:argType="string" />
@@ -109,9 +76,8 @@
     <fragment
         android:id="@+id/paymentSimulationFragment"
         android:name="com.kidsnfcplaypos.ui.payment.PaymentSimulationFragment"
-        android:label="PaymentSimulationFragment"
+        android:label="Payment"
         tools:layout="@layout/fragment_payment_simulation">
-        <!-- Add amountToPay argument back to the fragment declaration -->
         <argument
             android:name="amountToPay"
             app:argType="string" />

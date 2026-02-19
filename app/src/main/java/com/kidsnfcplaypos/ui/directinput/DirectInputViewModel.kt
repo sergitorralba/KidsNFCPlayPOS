@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 class DirectInputViewModel : ViewModel() {
 
@@ -20,17 +22,21 @@ class DirectInputViewModel : ViewModel() {
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), BigDecimal.ZERO)
 
-    // Derived state for the formatted display string (e.g., "80.01")
+    // Derived state for the formatted display string
     val formattedAmountDisplay: StateFlow<String> = _digitString.map { digits ->
-        val paddedDigits = digits.padStart(3, '0')
-        val integerPart = paddedDigits.substring(0, paddedDigits.length - 2)
-        val decimalPart = paddedDigits.substring(paddedDigits.length - 2)
+        val decimalAmount = if (digits.isEmpty()) {
+            BigDecimal.ZERO
+        } else {
+            BigDecimal(digits).movePointLeft(2)
+        }
         
-        // Format with thousand separators for better readability
-        val formatter = DecimalFormat("#,##0")
-        val formattedInteger = formatter.format(integerPart.toLongOrNull() ?: 0L)
-
-        "$formattedInteger.$decimalPart"
+        // Use standard NumberFormat for locale-aware decimal/thousand separators
+        val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
+            minimumFractionDigits = 2
+            maximumFractionDigits = 2
+        }
+        
+        formatter.format(decimalAmount)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "0.00")
 
     // Derived state to enable/disable the payment button

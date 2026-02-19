@@ -1,0 +1,68 @@
+<resources>
+    <string name="app_name">KidsNFCPlayPOS</string>
+
+    <!-- Menu Categorieën -->
+    <string name="category_cafe">Café</string>
+    <string name="category_restaurant">Restaurant</string>
+    <string name="category_fruit">Fruitwinkel</string>
+
+    <!-- Subcategorieën -->
+    <string name="subcategory_cafe_drinks">Drankjes</string>
+    <string name="subcategory_cafe_food">Eten</string>
+    <string name="subcategory_restaurant_main">Hoofdgerechten</string>
+    <string name="subcategory_restaurant_dessert">Nagerechten</string>
+    <string name="subcategory_fruit_fresh">Vers Fruit</string>
+
+    <!-- Café Items (14) -->
+    <string name="menu_item_cafe_coffee">Koffie</string>
+    <string name="menu_item_cafe_tea">Thee</string>
+    <string name="menu_item_cafe_muffin">Muffin</string>
+    <string name="menu_item_cafe_croissant">Croissant</string>
+    <string name="menu_item_cafe_juice">Sap</string>
+    <string name="menu_item_cafe_hot_chocolate">Warme Chocolademelk</string>
+    <string name="menu_item_cafe_cookie">Koekje</string>
+    <string name="menu_item_cafe_sandwich">Sandwich</string>
+    <string name="menu_item_cafe_donut">Donut</string>
+    <string name="menu_item_cafe_bagel">Bagel</string>
+    <string name="menu_item_cafe_milkshake">Milkshake</string>
+    <string name="menu_item_cafe_smoothie">Smoothie</string>
+    <string name="menu_item_cafe_brownie">Brownie</string>
+    <string name="menu_item_cafe_water">Water</string>
+
+    <!-- Restaurant Items (14) -->
+    <string name="menu_item_restaurant_burger">Burger</string>
+    <string name="menu_item_restaurant_pizza">Pizza</string>
+    <string name="menu_item_restaurant_cake">Taart</string>
+    <string name="menu_item_restaurant_icecream">Ijs</string>
+    <string name="menu_item_restaurant_pasta">Pasta</string>
+    <string name="menu_item_restaurant_salad">Salade</string>
+    <string name="menu_item_restaurant_fruit_salad">Fruitsalade</string>
+    <string name="menu_item_restaurant_pancakes">Pannenkoeken</string>
+    <string name="menu_item_restaurant_nuggets">Kipnuggets</string>
+    <string name="menu_item_restaurant_hotdog">Hotdog</string>
+    <string name="menu_item_restaurant_soup">Soep</string>
+    <string name="menu_item_restaurant_tacos">Tacos</string>
+    <string name="menu_item_restaurant_pie">Taart</string>
+    <string name="menu_item_restaurant_pudding">Pudding</string>
+
+    <!-- Fruitwinkel Items (14) -->
+    <string name="menu_item_fruit_apple">Appel</string>
+    <string name="menu_item_fruit_banana">Banaan</string>
+    <string name="menu_item_fruit_orange">Sinaasappel</string>
+    <string name="menu_item_fruit_strawberry">Aardbei</string>
+    <string name="menu_item_fruit_grapes">Druiven</string>
+    <string name="menu_item_fruit_watermelon">Watermeloen</string>
+    <string name="menu_item_fruit_pear">Peer</string>
+    <string name="menu_item_fruit_kiwi">Kiwi</string>
+    <string name="menu_item_fruit_pineapple">Ananas</string>
+    <string name="menu_item_fruit_mango">Mango</string>
+    <string name="menu_item_fruit_blueberry">Blauwe Bes</string>
+    <string name="menu_item_fruit_raspberry">Framboos</string>
+    <string name="menu_item_fruit_cherry">Kers</string>
+    <string name="menu_item_fruit_peach">Perzik</string>
+
+    <!-- Betaling Simulatie -->
+    <string name="payment_processing_timer">%d seconden resterend</string>
+
+    <string name="select_language_title">Selecteer Taal</string>
+</resources>

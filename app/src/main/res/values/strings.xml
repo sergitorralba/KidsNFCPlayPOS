@@ -4,27 +4,65 @@
     <!-- Menu Categories -->
     <string name="category_cafe">Cafe</string>
     <string name="category_restaurant">Restaurant</string>
+    <string name="category_fruit">Fruit Shop</string>
 
-    <!-- Cafe Subcategories -->
+    <!-- Subcategories -->
     <string name="subcategory_cafe_drinks">Drinks</string>
     <string name="subcategory_cafe_food">Food</string>
+    <string name="subcategory_restaurant_main">Main Courses</string>
+    <string name="subcategory_restaurant_dessert">Desserts</string>
+    <string name="subcategory_fruit_fresh">Fresh Fruit</string>
 
-    <!-- Cafe Menu Items -->
+    <!-- Cafe Menu Items (14) -->
     <string name="menu_item_cafe_coffee">Coffee</string>
     <string name="menu_item_cafe_tea">Tea</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
     <string name="menu_item_cafe_croissant">Croissant</string>
+    <string name="menu_item_cafe_juice">Juice</string>
+    <string name="menu_item_cafe_hot_chocolate">Hot Chocolate</string>
+    <string name="menu_item_cafe_cookie">Cookie</string>
+    <string name="menu_item_cafe_sandwich">Sandwich</string>
+    <string name="menu_item_cafe_donut">Donut</string>
+    <string name="menu_item_cafe_bagel">Bagel</string>
+    <string name="menu_item_cafe_milkshake">Milkshake</string>
+    <string name="menu_item_cafe_smoothie">Smoothie</string>
+    <string name="menu_item_cafe_brownie">Brownie</string>
+    <string name="menu_item_cafe_water">Water</string>
 
-    <!-- Restaurant Subcategories -->
-    <string name="subcategory_restaurant_main">Main Courses</string>
-    <string name="subcategory_restaurant_dessert">Desserts</string>
-
-    <!-- Restaurant Menu Items -->
+    <!-- Restaurant Menu Items (14) -->
     <string name="menu_item_restaurant_burger">Burger</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Cake</string>
     <string name="menu_item_restaurant_icecream">Ice Cream</string>
+    <string name="menu_item_restaurant_pasta">Pasta</string>
+    <string name="menu_item_restaurant_salad">Salad</string>
+    <string name="menu_item_restaurant_fruit_salad">Fruit Salad</string>
+    <string name="menu_item_restaurant_pancakes">Pancakes</string>
+    <string name="menu_item_restaurant_nuggets">Chicken Nuggets</string>
+    <string name="menu_item_restaurant_hotdog">Hot Dog</string>
+    <string name="menu_item_restaurant_soup">Soup</string>
+    <string name="menu_item_restaurant_tacos">Tacos</string>
+    <string name="menu_item_restaurant_pie">Pie</string>
+    <string name="menu_item_restaurant_pudding">Pudding</string>
+
+    <!-- Fruit Shop Items (14) -->
+    <string name="menu_item_fruit_apple">Apple</string>
+    <string name="menu_item_fruit_banana">Banana</string>
+    <string name="menu_item_fruit_orange">Orange</string>
+    <string name="menu_item_fruit_strawberry">Strawberry</string>
+    <string name="menu_item_fruit_grapes">Grapes</string>
+    <string name="menu_item_fruit_watermelon">Watermelon</string>
+    <string name="menu_item_fruit_pear">Pear</string>
+    <string name="menu_item_fruit_kiwi">Kiwi</string>
+    <string name="menu_item_fruit_pineapple">Pineapple</string>
+    <string name="menu_item_fruit_mango">Mango</string>
+    <string name="menu_item_fruit_blueberry">Blueberry</string>
+    <string name="menu_item_fruit_raspberry">Raspberry</string>
+    <string name="menu_item_fruit_cherry">Cherry</string>
+    <string name="menu_item_fruit_peach">Peach</string>
 
     <!-- Payment Simulation -->
     <string name="payment_processing_timer">%d seconds remaining</string>
+
+    <string name="select_language_title">Select Language</string>
 </resources>

@@ -4,21 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kidsnfcplaypos.databinding.FragmentCalculatorBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
 
 class CalculatorFragment : Fragment() {
 
     private var _binding: FragmentCalculatorBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: CalculatorViewModel by viewModels()
+    // Shared ViewModel with SummaryFragment
+    private val viewModel: CalculatorViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,45 +45,45 @@ class CalculatorFragment : Fragment() {
             button.setOnClickListener { viewModel.onDigit(button.text.first()) }
         }
 
-        // Operation buttons
-        binding.btnPlus.setOnClickListener { viewModel.onOperation(CalculatorOperation.Add) }
-        binding.btnSubtract.setOnClickListener { viewModel.onOperation(CalculatorOperation.Subtract) }
-        binding.btnMultiply.setOnClickListener { viewModel.onOperation(CalculatorOperation.Multiply) }
-        binding.btnDivide.setOnClickListener { viewModel.onOperation(CalculatorOperation.Divide) }
+        // Tape Operators (Add or Subtract to the tape)
+        binding.btnPlus.setOnClickListener { viewModel.onTapeOperator("+") }
+        binding.btnSubtract.setOnClickListener { viewModel.onTapeOperator("-") }
+
+        // Expression Operators (Building internal expression like x or /)
+        binding.btnMultiply.setOnClickListener { viewModel.onExpressionOperator("x") }
+        binding.btnDivide.setOnClickListener { viewModel.onExpressionOperator("/") }
         binding.btnPercent.setOnClickListener { viewModel.onPercent() }
 
         // Other buttons
         binding.btnClear.setOnClickListener { viewModel.onClear() }
         binding.btnDecimal.setOnClickListener { viewModel.onDecimal() }
-        binding.btnNegate.setOnClickListener { viewModel.onNegate() }
-        binding.btnEquals.setOnClickListener { viewModel.onEquals() }
-
-        // Pay button
+        
+        // Total button navigates to Summary
         binding.btnPay.setOnClickListener {
-            val finalAmount = viewModel.getCurrentCalculatedAmount()
-            val action = CalculatorFragmentDirections.actionCalculatorFragmentToPaymentSimulationFragment(
-                finalAmount.toPlainString()
-            )
+            val action = CalculatorFragmentDirections.actionCalculatorFragmentToCalculatorSummaryFragment()
             findNavController().navigate(action)
         }
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.currentInput.collectLatest {
-                binding.currentInput.text = it
+            viewModel.currentDisplay.collectLatest { displayValue ->
+                binding.currentInput.text = displayValue
             }
         }
+        
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.history.collectLatest { historyList ->
-                binding.historyLine1.text = if (historyList.size > 0) historyList[historyList.size - 1] else ""
-                binding.historyLine2.text = if (historyList.size > 1) historyList[historyList.size - 2] else ""
-                binding.historyLine3.text = if (historyList.size > 2) historyList[historyList.size - 3] else ""
+            viewModel.activeExpression.collectLatest { expression ->
+                binding.textActiveOperation.text = expression
+                binding.textActiveOperation.visibility = if (expression.isEmpty()) View.GONE else View.VISIBLE
             }
         }
+
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.isPayButtonEnabled.collectLatest { isEnabled ->
-                binding.btnPay.isEnabled = isEnabled
+            viewModel.grandTotal.collectLatest { total ->
+                // The big TOTAL button is enabled if we have anything on the tape
+                // or a current total that is not zero
+                binding.btnPay.isEnabled = total != BigDecimal.ZERO || viewModel.tape.value.isNotEmpty()
             }
         }
     }

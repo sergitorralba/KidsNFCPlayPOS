@@ -18,7 +18,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             app:layout_constraintEnd_toStartOf="@+id/quantity_controls"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
             app:layout_constraintStart_toStartOf="@+id/item_name"
             app:layout_constraintTop_toBottomOf="@+id/item_name"
             tools:text="$12.50" />
@@ -46,12 +46,13 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:visibility="visible">
 
-            <Button
+            <ImageButton
                 android:id="@+id/remove_button"
-                style="?attr/materialButtonOutlinedStyle"
+                style="?attr/materialIconButtonOutlinedStyle"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:text="-" />
+                android:contentDescription="Remove one item"
+                android:src="@drawable/ic_remove" />
 
             <TextView
                 android:id="@+id/quantity_text"
@@ -62,12 +63,13 @@
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 tools:text="1" />
 
-            <Button
+            <ImageButton
                 android:id="@+id/add_button"
-                style="?attr/materialButtonOutlinedStyle"
+                style="?attr/materialIconButtonOutlinedStyle"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:text="+" />
+                android:contentDescription="Add one item"
+                android:src="@drawable/ic_add" />
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

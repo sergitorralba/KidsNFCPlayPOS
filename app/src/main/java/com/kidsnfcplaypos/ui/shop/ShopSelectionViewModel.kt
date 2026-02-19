@@ -1,6 +1,7 @@
 package com.kidsnfcplaypos.ui.shop
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -18,9 +19,15 @@ import java.util.Locale
 // Represents the entire UI state for the ShopSelectionFragment
 data class ShopSelectionUiState(
     val isLoading: Boolean = true,
-    val availableMenus: List<MenuCategory> = emptyList(),
+    val availableMenus: List<MenuCategoryUI> = emptyList(),
     val selectedMenuId: String? = null,
     val error: String? = null
+)
+
+// UI-specific model for menu category with localized name
+data class MenuCategoryUI(
+    val id: String,
+    val localizedName: String
 )
 
 class ShopSelectionViewModel(
@@ -29,24 +36,45 @@ class ShopSelectionViewModel(
     private val resourceResolver: ResourceResolver
 ) : AndroidViewModel(application) {
 
-    private val currencyFormatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
+    private val prefs = application.getSharedPreferences("shop_prefs", android.content.Context.MODE_PRIVATE)
+    private val KEY_SELECTED_MENU = "selected_menu_id"
+
+    private fun getCurrencyFormatter(): NumberFormat {
+        return NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
+            currency = java.util.Currency.getInstance("EUR")
+        }
+    }
+
+    // --- Internal Data ---
+    private var _allMenuCategories = emptyList<MenuCategory>()
 
     // --- Source of Truth StateFlows ---
     private val _uiState = MutableStateFlow(ShopSelectionUiState())
     private val _cart = MutableStateFlow<Map<String, Int>>(emptyMap())
+    private val _refreshTrigger = MutableStateFlow(0)
 
     // --- Public-facing Derived StateFlows ---
-    val uiState: StateFlow<ShopSelectionUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<ShopSelectionUiState> = combine(_uiState, _refreshTrigger) { state, _ ->
+        // When refreshTrigger changes, update the localized names in the available menus list
+        state.copy(availableMenus = _allMenuCategories.map {
+            MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName))
+        })
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, _uiState.value)
 
-    val shopListItems: StateFlow<List<ShopListItem>> = combine(uiState, _cart) { state, cart ->
-        val selectedMenu = state.availableMenus.find { it.id == state.selectedMenuId }
+    val shopListItems: StateFlow<List<ShopListItem>> = combine(_uiState, _cart, _refreshTrigger) { state, cart, _ ->
+        Log.d("ShopSelectionVM", "Calculating shopListItems for menu: ${state.selectedMenuId}")
+        val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
+        val formatter = getCurrencyFormatter()
         selectedMenu?.subCategories?.flatMap { subCategory ->
-            val header = HeaderListItem(subCategory)
+            // Resolve the subcategory name from resources
+            val localizedSubCategoryName = resourceResolver.getString(subCategory.nameStringResourceName)
+            val header = HeaderListItem(localizedSubCategoryName, subCategory.id)
+            
             val items = subCategory.items.map { menuItem ->
                 ItemListItem(
                     menuItem = menuItem,
                     displayName = resourceResolver.getString(menuItem.nameStringResourceName),
-                    displayPrice = currencyFormatter.format(menuItem.price),
+                    displayPrice = formatter.format(menuItem.price),
                     quantity = cart[menuItem.id] ?: 0
                 )
             }
@@ -54,13 +82,13 @@ class ShopSelectionViewModel(
         } ?: emptyList()
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
 
-    val totalAmount: StateFlow<BigDecimal> = combine(uiState, _cart) { state, cart ->
+    val totalAmount: StateFlow<BigDecimal> = combine(_uiState, _cart) { state, cart ->
         var total = BigDecimal.ZERO
-        val selectedMenu = state.availableMenus.find { it.id == state.selectedMenuId }
+        val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
         if (selectedMenu != null) {
             val allItemsById = selectedMenu.subCategories.flatMap { it.items }.associateBy { it.id }
             cart.forEach { (itemId, quantity) ->
@@ -72,12 +100,34 @@ class ShopSelectionViewModel(
         total
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
+        started = SharingStarted.Eagerly,
         initialValue = BigDecimal.ZERO
+    )
+
+    val cartItems: StateFlow<List<ItemListItem>> = combine(_uiState, _cart, _refreshTrigger) { state, cart, _ ->
+        val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
+        val formatter = getCurrencyFormatter()
+        if (selectedMenu == null) return@combine emptyList<ItemListItem>()
+
+        selectedMenu.subCategories.flatMap { it.items }
+            .filter { cart.containsKey(it.id) }
+            .map { menuItem ->
+                ItemListItem(
+                    menuItem = menuItem,
+                    displayName = resourceResolver.getString(menuItem.nameStringResourceName),
+                    displayPrice = formatter.format(menuItem.price),
+                    quantity = cart[menuItem.id] ?: 0
+                )
+            }
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = emptyList()
     )
 
     // --- Lifecycle ---
     init {
+        Log.d("ShopSelectionVM", "ViewModel Init")
         loadMenuCategories()
     }
 
@@ -101,19 +151,34 @@ class ShopSelectionViewModel(
     }
 
     fun selectMenu(menuId: String) {
-        if (_uiState.value.availableMenus.any { it.id == menuId }) {
+        Log.d("ShopSelectionVM", "Selecting menu: $menuId")
+        if (_allMenuCategories.any { it.id == menuId }) {
             _uiState.value = _uiState.value.copy(selectedMenuId = menuId)
+            prefs.edit().putString(KEY_SELECTED_MENU, menuId).apply()
         }
+    }
+
+    fun refreshLocale() {
+        _refreshTrigger.value += 1
     }
 
     private fun loadMenuCategories() {
         _uiState.value = _uiState.value.copy(isLoading = true, error = null)
         viewModelScope.launch {
             menuRepository.loadAllMenuCategories().onSuccess { categories ->
+                _allMenuCategories = categories
+                val savedMenuId = prefs.getString(KEY_SELECTED_MENU, null)
+                val initialMenuId = if (categories.any { it.id == savedMenuId }) {
+                    savedMenuId
+                } else {
+                    categories.firstOrNull()?.id
+                }
+                
+                Log.d("ShopSelectionVM", "Menus loaded. Initial selection: $initialMenuId")
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    availableMenus = categories,
-                    selectedMenuId = categories.firstOrNull()?.id
+                    availableMenus = categories.map { MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName)) },
+                    selectedMenuId = initialMenuId
                 )
             }.onFailure { throwable ->
                 _uiState.value = _uiState.value.copy(

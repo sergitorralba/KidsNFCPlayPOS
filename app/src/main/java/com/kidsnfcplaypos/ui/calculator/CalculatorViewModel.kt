@@ -1,204 +1,175 @@
 package com.kidsnfcplaypos.ui.calculator
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.math.BigDecimal
+import java.math.MathContext
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.Locale
-import java.math.BigDecimal
-import java.math.MathContext
 
-sealed class CalculatorOperation(val symbol: String) {
-    object Add : CalculatorOperation("+")
-    object Subtract : CalculatorOperation("-")
-    object Multiply : CalculatorOperation("x")
-    object Divide : CalculatorOperation("/")
-    object Percent : CalculatorOperation("%") // Special handling for percentage
-}
+data class TapeEntry(
+    val expression: String,
+    val result: BigDecimal,
+    val formattedResult: String
+)
 
 class CalculatorViewModel : ViewModel() {
 
-    private val MAX_HISTORY_SIZE = 3
-    private val DEFAULT_DISPLAY_VALUE = "0"
-    private val MATH_CONTEXT = MathContext(10) // Define precision for BigDecimal operations
+    private val MATH_CONTEXT = MathContext(10)
 
-    // UI State
-    private val _currentInput = MutableStateFlow(DEFAULT_DISPLAY_VALUE)
-    val currentInput: StateFlow<String> = _currentInput
+    // --- State ---
+    private val _rawDigits = MutableStateFlow("") 
+    private val _activeExpression = MutableStateFlow("") 
+    val activeExpression: StateFlow<String> = _activeExpression
 
-    private val _history = MutableStateFlow(List(MAX_HISTORY_SIZE) { "" })
-    val history: StateFlow<List<String>> = _history
+    private val _currentDisplay = MutableStateFlow("0.00") 
+    val currentDisplay: StateFlow<String> = _currentDisplay
 
-    private val _isPayButtonEnabled = MutableStateFlow(false)
-    val isPayButtonEnabled: StateFlow<Boolean> = _isPayButtonEnabled
+    private val _tape = MutableStateFlow<List<TapeEntry>>(emptyList())
+    val tape: StateFlow<List<TapeEntry>> = _tape
 
-    // Internal State
-    private var operand1: BigDecimal? = null
-    private var operand2: BigDecimal? = null
-    private var currentOperation: CalculatorOperation? = null
-    private var isNewCalculation = true // Flag to clear input after an operation or equals
-    private var hasDecimal = false
+    private val _grandTotal = MutableStateFlow(BigDecimal.ZERO)
+    val grandTotal: StateFlow<BigDecimal> = _grandTotal
 
-    // Last result after an equals operation, used for subsequent calculations
-    private var lastResult: BigDecimal? = null
-
-    init {
-        updatePayButtonState()
+    private val currencyFormatter = DecimalFormat.getCurrencyInstance(Locale.getDefault()).apply {
+        currency = java.util.Currency.getInstance("EUR")
     }
 
     fun onDigit(digit: Char) {
-        if (isNewCalculation) {
-            _currentInput.value = DEFAULT_DISPLAY_VALUE
-            isNewCalculation = false
-            hasDecimal = false
+        if (_rawDigits.value.length < 9) {
+            _rawDigits.value += digit
+            updateDisplay()
         }
-        if (_currentInput.value == DEFAULT_DISPLAY_VALUE && digit != '0') {
-            _currentInput.value = digit.toString()
-        } else if (_currentInput.value != DEFAULT_DISPLAY_VALUE || digit == '0') {
-            // Prevent too many digits for a cleaner display, adjust as needed
-            if (_currentInput.value.length < 15) {
-                _currentInput.value += digit
+    }
+
+    private fun updateDisplay() {
+        val raw = _rawDigits.value
+        val expr = _activeExpression.value
+        
+        _currentDisplay.value = when {
+            expr.endsWith("% ") -> {
+                // If we have "5.00 % ", show the 5.00%
+                val percentValue = expr.split(" ")[0]
+                "$percentValue%"
+            }
+            raw.isEmpty() -> "0.00"
+            else -> {
+                val decimal = BigDecimal(raw).movePointLeft(2)
+                val formatter = DecimalFormat("0.00", DecimalFormatSymbols(Locale.getDefault()))
+                formatter.format(decimal)
             }
         }
-        updatePayButtonState()
     }
 
     fun onDecimal() {
-        if (isNewCalculation) {
-            _currentInput.value = DEFAULT_DISPLAY_VALUE
-            isNewCalculation = false
-            hasDecimal = false
-        }
-        if (!hasDecimal) {
-            _currentInput.value += "."
-            hasDecimal = true
-        }
-        updatePayButtonState()
+        // No-op for now in cash register mode
     }
 
-    fun onOperation(operation: CalculatorOperation) {
-        val currentNumber = _currentInput.value.toBigDecimalOrNull() ?: BigDecimal.ZERO
-
-        if (operand1 == null || isNewCalculation) {
-            operand1 = lastResult ?: currentNumber
-            isNewCalculation = false
-        } else {
-            operand2 = currentNumber
-            // Evaluate previous operation if an operation is chained
-            evaluateCurrentOperation()
+    fun onExpressionOperator(symbol: String) {
+        val currentAmount = getCurrentAmount()
+        if (currentAmount != BigDecimal.ZERO || _rawDigits.value.isNotEmpty()) {
+            _activeExpression.value = "${formatNumber(currentAmount)} $symbol "
+            _rawDigits.value = "" 
+            updateDisplay()
         }
-        currentOperation = operation
-        addOperationToHistory(formatNumber(operand1 ?: BigDecimal.ZERO) + " " + operation.symbol)
-        _currentInput.value = DEFAULT_DISPLAY_VALUE // Clear input for next operand
-        hasDecimal = false
-        updatePayButtonState()
-    }
-
-    fun onEquals() {
-        if (currentOperation == null) return
-
-        val currentNumber = _currentInput.value.toBigDecimalOrNull() ?: BigDecimal.ZERO
-        operand2 = currentNumber
-
-        val result = performCalculation(operand1, operand2, currentOperation)
-        if (result != null) {
-            lastResult = result
-            addOperationToHistory(formatNumber(operand1 ?: BigDecimal.ZERO) + " " + currentOperation!!.symbol + " " + formatNumber(operand2 ?: BigDecimal.ZERO) + " = " + formatNumber(result))
-            _currentInput.value = formatNumber(result)
-            operand1 = result
-        }
-
-        resetOperationState()
-        updatePayButtonState()
-    }
-
-    fun onClear() {
-        _currentInput.value = DEFAULT_DISPLAY_VALUE
-        _history.value = List(MAX_HISTORY_SIZE) { "" }
-        resetOperationState()
-        lastResult = null
-        updatePayButtonState()
-    }
-
-    fun onNegate() {
-        val currentNumber = _currentInput.value.toBigDecimalOrNull()
-        if (currentNumber != null && currentNumber != BigDecimal.ZERO) {
-            _currentInput.value = formatNumber(currentNumber.negate())
-            isNewCalculation = false // Negating doesn't start a new calculation
-        }
-        updatePayButtonState()
     }
 
     fun onPercent() {
-        val currentNumber = _currentInput.value.toBigDecimalOrNull()
-        if (currentNumber != null && currentNumber != BigDecimal.ZERO) {
-            _currentInput.value = formatNumber(currentNumber.divide(BigDecimal(100), MATH_CONTEXT))
-            isNewCalculation = false
+        // The user types the number first using X.XX logic, then hits %
+        // Example: "5 0 0 %" -> currentAmount is 5.00, activeExpression becomes "5.00 % "
+        if (_rawDigits.value.isNotEmpty()) {
+            val currentAmount = getCurrentAmount()
+            _activeExpression.value = "${formatNumber(currentAmount)} % "
+            _rawDigits.value = ""
+            updateDisplay()
         }
-        updatePayButtonState()
     }
 
-    private fun evaluateCurrentOperation() {
-        if (operand1 != null && operand2 != null && currentOperation != null) {
-            val result = performCalculation(operand1, operand2, currentOperation)
-            if (result != null) {
-                operand1 = result
-                addOperationToHistory(formatNumber(result) + " " + currentOperation!!.symbol) // Only show partial for chained ops
+    fun onTapeOperator(sign: String) {
+        val rawInput = _rawDigits.value
+        val expr = _activeExpression.value
+        
+        if (rawInput.isEmpty() && expr.isEmpty()) return
+
+        try {
+            val lineValue: BigDecimal
+            val tapeExpression: String
+
+            if (expr.contains("%")) {
+                // Percentage logic: X% of Total
+                val percentValue = expr.split(" ")[0].toBigDecimalOrNull() ?: BigDecimal.ZERO
+                // lineValue = total * (percent / 100)
+                lineValue = _grandTotal.value.multiply(percentValue).divide(BigDecimal(100), MATH_CONTEXT)
+                tapeExpression = "$sign (${formatNumber(percentValue)}% of ${currencyFormatter.format(_grandTotal.value)})"
+            } else if (expr.isNotEmpty()) {
+                // Complex expression logic (x, /)
+                val currentAmount = getCurrentAmount()
+                lineValue = evaluateExpression(expr, currentAmount)
+                tapeExpression = "$sign ($expr ${formatNumber(currentAmount)})"
+            } else {
+                // Simple number logic
+                lineValue = getCurrentAmount()
+                tapeExpression = "$sign ${formatNumber(lineValue)}"
             }
+
+            val finalValue = if (sign == "-") lineValue.negate() else lineValue
+            
+            _tape.value += TapeEntry(tapeExpression, finalValue, formatNumber(finalValue))
+            _grandTotal.value = _grandTotal.value.add(finalValue)
+            
+            _rawDigits.value = ""
+            _activeExpression.value = ""
+            updateDisplay()
+        } catch (e: Exception) {
+            Log.e("CalculatorVM", "Error in onTapeOperator", e)
+            _rawDigits.value = ""
+            _activeExpression.value = ""
+            updateDisplay()
         }
     }
 
-    private fun performCalculation(op1: BigDecimal?, op2: BigDecimal?, operation: CalculatorOperation?): BigDecimal? {
-        if (op1 == null || op2 == null || operation == null) return null
+    private fun getCurrentAmount(): BigDecimal {
+        return if (_rawDigits.value.isEmpty()) BigDecimal.ZERO else BigDecimal(_rawDigits.value).movePointLeft(2)
+    }
 
-        return when (operation) {
-            CalculatorOperation.Add -> op1.add(op2, MATH_CONTEXT)
-            CalculatorOperation.Subtract -> op1.subtract(op2, MATH_CONTEXT)
-            CalculatorOperation.Multiply -> op1.multiply(op2, MATH_CONTEXT)
-            CalculatorOperation.Divide -> {
-                if (op2 == BigDecimal.ZERO) {
-                    // Handle division by zero
-                    return BigDecimal.ZERO // Or throw an error/display "Error"
-                }
-                op1.divide(op2, MATH_CONTEXT)
-            }
-            CalculatorOperation.Percent -> op1 // Percent is handled on input
+    private fun evaluateExpression(expression: String, currentAmount: BigDecimal): BigDecimal {
+        val parts = expression.trim().split(" ")
+        if (parts.size < 2) return currentAmount
+
+        val op1 = parts[0].toBigDecimalOrNull() ?: BigDecimal.ZERO
+        val op = parts[1]
+        
+        return when (op) {
+            "x" -> op1.multiply(currentAmount, MATH_CONTEXT)
+            "/" -> if (currentAmount != BigDecimal.ZERO) op1.divide(currentAmount, MATH_CONTEXT) else op1
+            else -> currentAmount
         }
     }
 
-    private fun addOperationToHistory(op: String) {
-        val updatedHistory = _history.value.toMutableList()
-        if (op.isNotBlank()) {
-            if (updatedHistory.size >= MAX_HISTORY_SIZE) {
-                updatedHistory.removeAt(0) // Remove oldest
-            }
-            updatedHistory.add(op)
-            _history.value = updatedHistory
+    fun onClear() {
+        if (_rawDigits.value.isEmpty() && _activeExpression.value.isEmpty()) {
+            resetAll()
+        } else {
+            _rawDigits.value = ""
+            _activeExpression.value = ""
+            updateDisplay()
         }
     }
 
-    private fun resetOperationState() {
-        operand1 = null
-        operand2 = null
-        currentOperation = null
-        isNewCalculation = true
-        hasDecimal = false
-    }
-
-    private fun updatePayButtonState() {
-        _isPayButtonEnabled.value = (_currentInput.value.toBigDecimalOrNull() ?: BigDecimal.ZERO) > BigDecimal.ZERO
-    }
-
-    fun getCurrentCalculatedAmount(): BigDecimal {
-        return _currentInput.value.toBigDecimalOrNull() ?: BigDecimal.ZERO
+    fun resetAll() {
+        _tape.value = emptyList()
+        _grandTotal.value = BigDecimal.ZERO
+        _rawDigits.value = ""
+        _activeExpression.value = ""
+        updateDisplay()
     }
 
     private fun formatNumber(number: BigDecimal): String {
-        // Always show two decimal places for monetary display, as it's clearer for kids.
         val symbols = DecimalFormatSymbols(Locale.getDefault())
         val formatter = DecimalFormat("0.00", symbols)
         return formatter.format(number)
     }
-
 }

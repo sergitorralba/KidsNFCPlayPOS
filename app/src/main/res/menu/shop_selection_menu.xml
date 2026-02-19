@@ -8,4 +8,10 @@
         android:icon="@android:drawable/ic_menu_rotate"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/action_change_language"
+        android:title="Change Language"
+        android:icon="@android:drawable/ic_menu_manage"
+        app:showAsAction="ifRoom" />
+
 </menu>

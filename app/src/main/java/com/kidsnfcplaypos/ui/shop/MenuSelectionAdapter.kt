@@ -1,15 +1,15 @@
 package com.kidsnfcplaypos.ui.shop
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kidsnfcplaypos.data.model.MenuCategory
 import com.kidsnfcplaypos.databinding.ItemMenuSelectionBinding
 
-class MenuSelectionAdapter(private val onItemClicked: (MenuCategory) -> Unit) :
-    ListAdapter<MenuCategory, MenuSelectionAdapter.MenuViewHolder>(DiffCallback()) {
+class MenuSelectionAdapter(private val onItemClicked: (MenuCategoryUI) -> Unit) :
+    ListAdapter<MenuCategoryUI, MenuSelectionAdapter.MenuViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val binding = ItemMenuSelectionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,21 +26,26 @@ class MenuSelectionAdapter(private val onItemClicked: (MenuCategory) -> Unit) :
 
         init {
             binding.root.setOnClickListener {
-                onItemClicked(getItem(adapterPosition))
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = getItem(position)
+                    Log.d("MenuSelectionAdapter", "Menu clicked: ${item.id}")
+                    onItemClicked(item)
+                }
             }
         }
 
-        fun bind(category: MenuCategory) {
-            binding.menuName.text = category.displayName
+        fun bind(category: MenuCategoryUI) {
+            binding.menuName.text = category.localizedName
         }
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<MenuCategory>() {
-        override fun areItemsTheSame(oldItem: MenuCategory, newItem: MenuCategory): Boolean {
+    private class DiffCallback : DiffUtil.ItemCallback<MenuCategoryUI>() {
+        override fun areItemsTheSame(oldItem: MenuCategoryUI, newItem: MenuCategoryUI): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: MenuCategory, newItem: MenuCategory): Boolean {
+        override fun areContentsTheSame(oldItem: MenuCategoryUI, newItem: MenuCategoryUI): Boolean {
             return oldItem == newItem
         }
     }
