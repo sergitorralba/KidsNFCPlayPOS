@@ -24,6 +24,7 @@ sealed class PaymentUiState {
 sealed class PaymentEvent {
     object TriggerNfcFeedback : PaymentEvent() // One-time event for vibration/beep
     object PaymentCompleted : PaymentEvent() // One-time event to navigate away
+    object PaymentSuccess : PaymentEvent() // Specific event for successful payment
 }
 
 class PaymentViewModel : ViewModel() {
@@ -116,6 +117,11 @@ class PaymentViewModel : ViewModel() {
 
     fun onPaymentResultAcknowledged() {
         // Called when user clicks "Accept" after success or after failure screen timeout
-        viewModelScope.launch { _eventFlow.emit(PaymentEvent.PaymentCompleted) }
+        viewModelScope.launch {
+            if (_uiState.value is PaymentUiState.Success) {
+                _eventFlow.emit(PaymentEvent.PaymentSuccess)
+            }
+            _eventFlow.emit(PaymentEvent.PaymentCompleted)
+        }
     }
 }

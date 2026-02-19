@@ -25,6 +25,8 @@ import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.kidsnfcplaypos.ui.payment.PaymentEvent
+import com.kidsnfcplaypos.ui.payment.PaymentViewModel
 import com.kidsnfcplaypos.util.LocaleManager
 
 class ShopSelectionFragment : Fragment() {
@@ -36,6 +38,8 @@ class ShopSelectionFragment : Fragment() {
     private val viewModel: ShopSelectionViewModel by activityViewModels {
         ShopSelectionViewModel.Factory(requireActivity().application)
     }
+
+    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     private lateinit var shopCategoryAdapter: ShopCategoryAdapter
 
@@ -146,6 +150,15 @@ class ShopSelectionFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.totalAmount.collectLatest { total ->
                 binding.fabCheckout.visibility = if (total > BigDecimal.ZERO) View.VISIBLE else View.GONE
+            }
+        }
+
+        // Listen for successful payment to clear the cart
+        viewLifecycleOwner.lifecycleScope.launch {
+            paymentViewModel.eventFlow.collectLatest { event ->
+                if (event == PaymentEvent.PaymentSuccess) {
+                    viewModel.clearCart()
+                }
             }
         }
     }

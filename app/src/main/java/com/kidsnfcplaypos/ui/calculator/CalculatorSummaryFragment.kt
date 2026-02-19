@@ -12,6 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kidsnfcplaypos.databinding.FragmentCalculatorSummaryBinding
+import com.kidsnfcplaypos.ui.payment.PaymentEvent
+import com.kidsnfcplaypos.ui.payment.PaymentViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
@@ -25,6 +27,8 @@ class CalculatorSummaryFragment : Fragment() {
 
     // Share the ViewModel with the CalculatorFragment
     private val viewModel: CalculatorViewModel by activityViewModels()
+
+    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     private val currencyFormatter: NumberFormat by lazy {
         NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
@@ -84,6 +88,15 @@ class CalculatorSummaryFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.grandTotal.collectLatest { total: BigDecimal ->
                 binding.textTotalAmount.text = currencyFormatter.format(total)
+            }
+        }
+
+        // Listen for successful payment to reset the calculator
+        viewLifecycleOwner.lifecycleScope.launch {
+            paymentViewModel.eventFlow.collectLatest { event ->
+                if (event == PaymentEvent.PaymentSuccess) {
+                    viewModel.resetAll()
+                }
             }
         }
     }

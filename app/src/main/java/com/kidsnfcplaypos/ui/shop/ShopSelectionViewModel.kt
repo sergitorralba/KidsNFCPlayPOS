@@ -150,6 +150,10 @@ class ShopSelectionViewModel(
         _cart.value = newCart
     }
 
+    fun clearCart() {
+        _cart.value = emptyMap()
+    }
+
     fun selectMenu(menuId: String) {
         Log.d("ShopSelectionVM", "Selecting menu: $menuId")
         if (_allMenuCategories.any { it.id == menuId }) {
