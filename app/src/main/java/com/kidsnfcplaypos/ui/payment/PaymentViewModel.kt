@@ -30,7 +30,6 @@ sealed class PaymentEvent {
 class PaymentViewModel : ViewModel() {
 
     private val PAYMENT_SIMULATION_DURATION_SECONDS = 7
-    private val FAILURE_SCREEN_DURATION_SECONDS = 5
     private val TAP_TIMEOUT_MS = 500L // Time window for consecutive taps
 
     // UI State exposed to Fragment
@@ -104,9 +103,7 @@ class PaymentViewModel : ViewModel() {
             // Simulation finished, decide based on whether it was forced to fail
             if (isForcedFailure) {
                 _uiState.value = PaymentUiState.Failure
-                // Auto-navigate away after a delay on failure
-                delay(FAILURE_SCREEN_DURATION_SECONDS * 1000L)
-                _eventFlow.emit(PaymentEvent.PaymentCompleted)
+                // No auto-navigation here to allow user to see failure and decide what to do
             } else {
                 _uiState.value = PaymentUiState.Success
             }
@@ -114,11 +111,12 @@ class PaymentViewModel : ViewModel() {
     }
 
     fun onPaymentResultAcknowledged() {
-        // Called when user clicks "Accept" after success
+        // Called when user clicks "Accept" after success OR clicks something on failure
         viewModelScope.launch {
             if (_uiState.value is PaymentUiState.Success) {
                 _eventFlow.emit(PaymentEvent.PaymentSuccess)
             }
+            // PaymentCompleted is emitted for both success and failure to navigate back
             _eventFlow.emit(PaymentEvent.PaymentCompleted)
         }
     }

@@ -104,6 +104,10 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
         binding.buttonAccept.setOnClickListener {
             viewModel.onPaymentResultAcknowledged()
         }
+
+        binding.buttonRetry.setOnClickListener {
+            viewModel.onPaymentResultAcknowledged()
+        }
     }
 
     private fun observeViewModel() {
