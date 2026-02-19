@@ -59,6 +59,13 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         
         // Direct Input is always available
         bottomNav.menu.findItem(R.id.directInputFragment).isVisible = true
+
+        // If the current destination is now hidden, navigate to Direct Input
+        val currentDestId = navController.currentDestination?.id
+        if ((currentDestId == R.id.shopSelectionFragment && !showShop) ||
+            (currentDestId == R.id.calculatorFragment && !showCalculator)) {
+            navController.navigate(R.id.directInputFragment)
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
