@@ -169,9 +169,14 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
                         // We check the UI state to see if it was a success.
                         // If it was successful, we pop up to the main entry points.
                         if (viewModel.uiState.value is PaymentUiState.Success) {
-                            findNavController().popBackStack(R.id.shopSelectionFragment, false)
-                            findNavController().popBackStack(R.id.calculatorFragment, false)
-                            findNavController().popBackStack(R.id.directInputFragment, false)
+                            // If we were in Calculator, we want to stay in Calculator but skip the Summary screen
+                            if (!findNavController().popBackStack(R.id.calculatorFragment, false)) {
+                                // If not in calculator, try shop
+                                if (!findNavController().popBackStack(R.id.shopSelectionFragment, false)) {
+                                    // Otherwise just go back to wherever (Direct Input)
+                                    findNavController().popBackStack()
+                                }
+                            }
                         } else {
                             // If it was a failure, just go back one step so they can try again
                             findNavController().popBackStack()
