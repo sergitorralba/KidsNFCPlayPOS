@@ -19,6 +19,20 @@
       ]
     },
     {
+      "id": "restaurant_drinks",
+      "nameStringResourceName": "subcategory_restaurant_drinks",
+      "displayName": "Drinks",
+      "items": [
+        { "id": "restaurant_water", "nameStringResourceName": "menu_item_restaurant_water", "price": 1.00 },
+        { "id": "restaurant_juice", "nameStringResourceName": "menu_item_restaurant_juice", "price": 2.00 },
+        { "id": "restaurant_soda", "nameStringResourceName": "menu_item_restaurant_soda", "price": 2.50 },
+        { "id": "restaurant_milk", "nameStringResourceName": "menu_item_restaurant_milk", "price": 1.50 },
+        { "id": "restaurant_lemonade", "nameStringResourceName": "menu_item_restaurant_lemonade", "price": 2.50 },
+        { "id": "restaurant_iced_tea", "nameStringResourceName": "menu_item_restaurant_iced_tea", "price": 2.00 },
+        { "id": "restaurant_milkshake", "nameStringResourceName": "menu_item_restaurant_milkshake", "price": 4.00 }
+      ]
+    },
+    {
       "id": "restaurant_dessert",
       "nameStringResourceName": "subcategory_restaurant_dessert",
       "displayName": "Desserts",

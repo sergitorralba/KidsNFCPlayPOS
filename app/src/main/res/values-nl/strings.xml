@@ -10,10 +10,11 @@
     <string name="subcategory_cafe_drinks">Drankjes</string>
     <string name="subcategory_cafe_food">Eten</string>
     <string name="subcategory_restaurant_main">Hoofdgerechten</string>
+    <string name="subcategory_restaurant_drinks">Drankjes</string>
     <string name="subcategory_restaurant_dessert">Nagerechten</string>
     <string name="subcategory_fruit_fresh">Vers Fruit</string>
 
-    <!-- Café Items (14) -->
+    <!-- Café Items -->
     <string name="menu_item_cafe_coffee">Koffie</string>
     <string name="menu_item_cafe_tea">Thee</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
@@ -29,7 +30,7 @@
     <string name="menu_item_cafe_brownie">Brownie</string>
     <string name="menu_item_cafe_water">Water</string>
 
-    <!-- Restaurant Items (14) -->
+    <!-- Restaurant Items -->
     <string name="menu_item_restaurant_burger">Burger</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Taart</string>
@@ -44,8 +45,17 @@
     <string name="menu_item_restaurant_tacos">Tacos</string>
     <string name="menu_item_restaurant_pie">Taart</string>
     <string name="menu_item_restaurant_pudding">Pudding</string>
+    
+    <!-- Restaurant Drankjes -->
+    <string name="menu_item_restaurant_water">Water</string>
+    <string name="menu_item_restaurant_juice">Sap</string>
+    <string name="menu_item_restaurant_soda">Frisdrank</string>
+    <string name="menu_item_restaurant_milk">Melk</string>
+    <string name="menu_item_restaurant_lemonade">Limonade</string>
+    <string name="menu_item_restaurant_iced_tea">IJsthee</string>
+    <string name="menu_item_restaurant_milkshake">Milkshake</string>
 
-    <!-- Fruitwinkel Items (14) -->
+    <!-- Fruitwinkel Items -->
     <string name="menu_item_fruit_apple">Appel</string>
     <string name="menu_item_fruit_banana">Banaan</string>
     <string name="menu_item_fruit_orange">Sinaasappel</string>

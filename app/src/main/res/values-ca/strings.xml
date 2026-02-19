@@ -10,10 +10,11 @@
     <string name="subcategory_cafe_drinks">Begudes</string>
     <string name="subcategory_cafe_food">Menjar</string>
     <string name="subcategory_restaurant_main">Plats Principals</string>
+    <string name="subcategory_restaurant_drinks">Begudes</string>
     <string name="subcategory_restaurant_dessert">Postres</string>
     <string name="subcategory_fruit_fresh">Fruita Fresca</string>
 
-    <!-- Articles de Cafeteria (14) -->
+    <!-- Articles de Cafeteria -->
     <string name="menu_item_cafe_coffee">Cafè</string>
     <string name="menu_item_cafe_tea">Te</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
@@ -29,7 +30,7 @@
     <string name="menu_item_cafe_brownie">Brownie</string>
     <string name="menu_item_cafe_water">Aigua</string>
 
-    <!-- Articles de Restaurant (14) -->
+    <!-- Articles de Restaurant -->
     <string name="menu_item_restaurant_burger">Hamburguesa</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Pastís</string>
@@ -44,8 +45,17 @@
     <string name="menu_item_restaurant_tacos">Tacos</string>
     <string name="menu_item_restaurant_pie">Pastís de Fruita</string>
     <string name="menu_item_restaurant_pudding">Púding</string>
+    
+    <!-- Begudes de Restaurant -->
+    <string name="menu_item_restaurant_water">Aigua</string>
+    <string name="menu_item_restaurant_juice">Suc</string>
+    <string name="menu_item_restaurant_soda">Refresc</string>
+    <string name="menu_item_restaurant_milk">Llet</string>
+    <string name="menu_item_restaurant_lemonade">Llimonada</string>
+    <string name="menu_item_restaurant_iced_tea">Te Gelat</string>
+    <string name="menu_item_restaurant_milkshake">Batut</string>
 
-    <!-- Articles de Fruiteria (14) -->
+    <!-- Articles de Fruiteria -->
     <string name="menu_item_fruit_apple">Poma</string>
     <string name="menu_item_fruit_banana">Plàtan</string>
     <string name="menu_item_fruit_orange">Taronja</string>

@@ -10,10 +10,11 @@
     <string name="subcategory_cafe_drinks">Bebidas</string>
     <string name="subcategory_cafe_food">Comida</string>
     <string name="subcategory_restaurant_main">Platos Principales</string>
+    <string name="subcategory_restaurant_drinks">Bebidas</string>
     <string name="subcategory_restaurant_dessert">Postres</string>
     <string name="subcategory_fruit_fresh">Fruta Fresca</string>
 
-    <!-- Artículos de Cafetería (14) -->
+    <!-- Artículos de Cafetería -->
     <string name="menu_item_cafe_coffee">Café</string>
     <string name="menu_item_cafe_tea">Té</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
@@ -29,7 +30,7 @@
     <string name="menu_item_cafe_brownie">Brownie</string>
     <string name="menu_item_cafe_water">Agua</string>
 
-    <!-- Artículos de Restaurante (14) -->
+    <!-- Artículos de Restaurante -->
     <string name="menu_item_restaurant_burger">Hamburguesa</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Tarta</string>
@@ -44,8 +45,17 @@
     <string name="menu_item_restaurant_tacos">Tacos</string>
     <string name="menu_item_restaurant_pie">Pastel</string>
     <string name="menu_item_restaurant_pudding">Pudin</string>
+    
+    <!-- Bebidas de Restaurante -->
+    <string name="menu_item_restaurant_water">Agua</string>
+    <string name="menu_item_restaurant_juice">Zumo</string>
+    <string name="menu_item_restaurant_soda">Refresco</string>
+    <string name="menu_item_restaurant_milk">Leche</string>
+    <string name="menu_item_restaurant_lemonade">Limonada</string>
+    <string name="menu_item_restaurant_iced_tea">Té Helado</string>
+    <string name="menu_item_restaurant_milkshake">Batido</string>
 
-    <!-- Artículos de Frutería (14) -->
+    <!-- Artículos de Frutería -->
     <string name="menu_item_fruit_apple">Manzana</string>
     <string name="menu_item_fruit_banana">Plátano</string>
     <string name="menu_item_fruit_orange">Naranja</string>

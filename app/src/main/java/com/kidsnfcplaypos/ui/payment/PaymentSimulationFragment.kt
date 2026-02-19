@@ -10,10 +10,11 @@ import android.os.Bundle
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -72,7 +73,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
             SoundPool(1, AudioManager.STREAM_MUSIC, 0)
         }
         soundPool.setOnLoadCompleteListener(this)
-        beepSoundId = soundPool.load(context, R.raw.beep, 1) // Assuming you have a beep.wav in res/raw
+        beepSoundId = soundPool.load(context, R.raw.beep, 1)
     }
 
     override fun onCreateView(
@@ -95,7 +96,8 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
     }
 
     private fun setupClickListeners() {
-        binding.imageWalkingCard.setOnClickListener {
+        // Keep secret tap on the connection image to force failure for testing
+        binding.imageConnection.setOnClickListener {
             viewModel.onSecretTap()
         }
 
@@ -107,31 +109,32 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collectLatest { state ->
-                // Reset visibility of all state-specific layouts
                 binding.textWaitingForNfc.visibility = View.GONE
                 binding.layoutProcessing.visibility = View.GONE
                 binding.layoutSuccess.visibility = View.GONE
                 binding.layoutFailure.visibility = View.GONE
 
-                // Update UI based on current state
                 when (state) {
                     PaymentUiState.Idle, PaymentUiState.NfcTapDetected -> {
                         binding.textWaitingForNfc.visibility = View.VISIBLE
-                        // Only show amount when waiting for NFC if not already processing
                         binding.textAmountToPay.visibility = View.VISIBLE
+                        binding.imageConnection.clearAnimation()
                     }
                     is PaymentUiState.Processing -> {
                         binding.layoutProcessing.visibility = View.VISIBLE
                         binding.textProcessingTimer.text = getString(R.string.payment_processing_timer, state.remainingTimeSeconds)
-                        binding.textAmountToPay.visibility = View.VISIBLE // Keep amount visible
+                        binding.textAmountToPay.visibility = View.VISIBLE
+                        startRotationAnimation()
                     }
                     PaymentUiState.Success -> {
                         binding.layoutSuccess.visibility = View.VISIBLE
-                        binding.textAmountToPay.visibility = View.GONE // Hide amount on success screen
+                        binding.textAmountToPay.visibility = View.GONE
+                        binding.imageConnection.clearAnimation()
                     }
                     PaymentUiState.Failure -> {
                         binding.layoutFailure.visibility = View.VISIBLE
-                        binding.textAmountToPay.visibility = View.GONE // Hide amount on failure screen
+                        binding.textAmountToPay.visibility = View.GONE
+                        binding.imageConnection.clearAnimation()
                     }
                 }
             }
@@ -147,15 +150,27 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
         }
     }
 
+    private fun startRotationAnimation() {
+        if (binding.imageConnection.animation == null) {
+            val rotate = RotateAnimation(
+                0f, 360f,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f
+            ).apply {
+                duration = 2000
+                repeatCount = Animation.INFINITE
+            }
+            binding.imageConnection.startAnimation(rotate)
+        }
+    }
+
     private fun triggerNfcFeedback() {
-        // Vibrate
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
         } else {
             @Suppress("DEPRECATION")
             vibrator.vibrate(200)
         }
-        // Beep
         if (isSoundLoaded) {
             soundPool.play(beepSoundId, 1f, 1f, 1, 0, 1f)
         }
@@ -172,7 +187,6 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
     }
 
     override fun onTagDiscovered(tag: Tag?) {
-        // Run on UI thread as it updates ViewModel/UI
         viewLifecycleOwner.lifecycleScope.launch {
             if (tag != null) {
                 viewModel.onNfcTagDetected(tag)
@@ -182,7 +196,12 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.imageConnection.clearAnimation()
         _binding = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         soundPool.release()
     }
 

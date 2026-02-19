@@ -10,10 +10,11 @@
     <string name="subcategory_cafe_drinks">Drinks</string>
     <string name="subcategory_cafe_food">Food</string>
     <string name="subcategory_restaurant_main">Main Courses</string>
+    <string name="subcategory_restaurant_drinks">Drinks</string>
     <string name="subcategory_restaurant_dessert">Desserts</string>
     <string name="subcategory_fruit_fresh">Fresh Fruit</string>
 
-    <!-- Cafe Menu Items (14) -->
+    <!-- Cafe Menu Items -->
     <string name="menu_item_cafe_coffee">Coffee</string>
     <string name="menu_item_cafe_tea">Tea</string>
     <string name="menu_item_cafe_muffin">Muffin</string>
@@ -29,7 +30,7 @@
     <string name="menu_item_cafe_brownie">Brownie</string>
     <string name="menu_item_cafe_water">Water</string>
 
-    <!-- Restaurant Menu Items (14) -->
+    <!-- Restaurant Menu Items -->
     <string name="menu_item_restaurant_burger">Burger</string>
     <string name="menu_item_restaurant_pizza">Pizza</string>
     <string name="menu_item_restaurant_cake">Cake</string>
@@ -44,8 +45,17 @@
     <string name="menu_item_restaurant_tacos">Tacos</string>
     <string name="menu_item_restaurant_pie">Pie</string>
     <string name="menu_item_restaurant_pudding">Pudding</string>
+    
+    <!-- Restaurant Drinks -->
+    <string name="menu_item_restaurant_water">Water</string>
+    <string name="menu_item_restaurant_juice">Juice</string>
+    <string name="menu_item_restaurant_soda">Soda</string>
+    <string name="menu_item_restaurant_milk">Milk</string>
+    <string name="menu_item_restaurant_lemonade">Lemonade</string>
+    <string name="menu_item_restaurant_iced_tea">Iced Tea</string>
+    <string name="menu_item_restaurant_milkshake">Milkshake</string>
 
-    <!-- Fruit Shop Items (14) -->
+    <!-- Fruit Shop Items -->
     <string name="menu_item_fruit_apple">Apple</string>
     <string name="menu_item_fruit_banana">Banana</string>
     <string name="menu_item_fruit_orange">Orange</string>

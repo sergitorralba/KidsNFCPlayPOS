@@ -34,27 +34,28 @@
         tools:visibility="gone">
 
         <ImageView
-            android:id="@+id/image_walking_card"
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:src="@drawable/funny_mastercard_placeholder"
+            android:id="@+id/image_connection"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="48dp"
+            android:src="@drawable/connection"
             app:layout_constraintBottom_toTopOf="@+id/progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_chainStyle="packed"
-            android:contentDescription="Walking credit card animation" />
+            android:contentDescription="Connecting animation" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintBottom_toTopOf="@+id/text_processing_timer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_walking_card" />
+            app:layout_constraintTop_toBottomOf="@+id/image_connection" />
 
         <TextView
             android:id="@+id/text_processing_timer"
