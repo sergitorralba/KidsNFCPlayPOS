@@ -25,7 +25,7 @@ A kid-friendly "Point of Sale" (POS) Android application designed for play-prete
 *   **Localization:** Custom `ResourceResolver` to ensure locale changes apply correctly even on older devices.
 *   **NFC:** Uses `NfcAdapter` in Reader Mode.
 
-## 🤫 Secret Features (For Testing)
+## 🤫 Secret Features
 
 ### Force Payment Failure
 Want to see how the "Payment Failed" screen looks? 
