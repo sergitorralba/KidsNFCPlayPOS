@@ -1,6 +1,7 @@
 package com.kidsnfcplaypos.ui.directinput
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -10,12 +11,14 @@ import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.kidsnfcplaypos.R
 import com.kidsnfcplaypos.databinding.FragmentDirectInputBinding
+import com.kidsnfcplaypos.ui.payment.PaymentViewModel
 import com.kidsnfcplaypos.util.LanguageDialogHelper
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -26,6 +29,8 @@ class DirectInputFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: DirectInputViewModel by viewModels()
+    
+    private val paymentViewModel: PaymentViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +92,6 @@ class DirectInputFragment : Fragment() {
                 amountToPay.toPlainString()
             )
             findNavController().navigate(action)
-            viewModel.resetInput()
         }
     }
 
@@ -101,6 +105,17 @@ class DirectInputFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.isPaymentEnabled.collectLatest { isEnabled ->
                 binding.btnEnter.isEnabled = isEnabled
+            }
+        }
+
+        // Listen for persistent reset state
+        viewLifecycleOwner.lifecycleScope.launch {
+            paymentViewModel.shouldResetPOS.collectLatest { shouldReset ->
+                if (shouldReset) {
+                    Log.d("DirectInputFragment", "Resetting input due to payment success")
+                    viewModel.resetInput()
+                    paymentViewModel.posResetConsumed()
+                }
             }
         }
     }

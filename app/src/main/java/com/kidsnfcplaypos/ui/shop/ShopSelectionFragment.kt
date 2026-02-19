@@ -96,6 +96,7 @@ class ShopSelectionFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
+        // Instantiate the adapter, passing lambdas that call the ViewModel
         shopCategoryAdapter = ShopCategoryAdapter(
             onAddItem = { menuItem ->
                 viewModel.addItem(menuItem.id)
@@ -133,10 +134,13 @@ class ShopSelectionFragment : Fragment() {
             }
         }
 
+        // Listen for persistent reset state
         viewLifecycleOwner.lifecycleScope.launch {
-            paymentViewModel.eventFlow.collectLatest { event ->
-                if (event == PaymentEvent.PaymentSuccess) {
+            paymentViewModel.shouldResetPOS.collectLatest { shouldReset ->
+                if (shouldReset) {
+                    Log.d("ShopSelectionFragment", "Resetting cart due to payment success")
                     viewModel.clearCart()
+                    paymentViewModel.posResetConsumed()
                 }
             }
         }

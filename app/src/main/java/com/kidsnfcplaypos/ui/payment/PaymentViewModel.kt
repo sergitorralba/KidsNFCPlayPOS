@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 
@@ -24,7 +25,6 @@ sealed class PaymentUiState {
 sealed class PaymentEvent {
     object TriggerNfcFeedback : PaymentEvent() // One-time event for vibration/beep
     object PaymentCompleted : PaymentEvent() // One-time event to navigate away
-    object PaymentSuccess : PaymentEvent() // Specific event for successful payment
 }
 
 class PaymentViewModel : ViewModel() {
@@ -39,6 +39,11 @@ class PaymentViewModel : ViewModel() {
     // One-time events
     private val _eventFlow = MutableSharedFlow<PaymentEvent>()
     val eventFlow: SharedFlow<PaymentEvent> = _eventFlow
+
+    // --- Reset Logic ---
+    // This state persists until consumed by the Shop or Calculator screens
+    private val _shouldResetPOS = MutableStateFlow(false)
+    val shouldResetPOS: StateFlow<Boolean> = _shouldResetPOS.asStateFlow()
 
     // Internal state for simulation
     private var paymentAmount: BigDecimal = BigDecimal.ZERO
@@ -103,7 +108,6 @@ class PaymentViewModel : ViewModel() {
             // Simulation finished, decide based on whether it was forced to fail
             if (isForcedFailure) {
                 _uiState.value = PaymentUiState.Failure
-                // No auto-navigation here to allow user to see failure and decide what to do
             } else {
                 _uiState.value = PaymentUiState.Success
             }
@@ -114,10 +118,14 @@ class PaymentViewModel : ViewModel() {
         // Called when user clicks "Accept" after success OR clicks something on failure
         viewModelScope.launch {
             if (_uiState.value is PaymentUiState.Success) {
-                _eventFlow.emit(PaymentEvent.PaymentSuccess)
+                _shouldResetPOS.value = true
             }
             // PaymentCompleted is emitted for both success and failure to navigate back
             _eventFlow.emit(PaymentEvent.PaymentCompleted)
         }
+    }
+
+    fun posResetConsumed() {
+        _shouldResetPOS.value = false
     }
 }
