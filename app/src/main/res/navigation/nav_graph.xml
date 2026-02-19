@@ -11,8 +11,8 @@
         android:label="Splash"
         tools:layout="@layout/fragment_splash">
         <action
-            android:id="@+id/action_splashFragment_to_shopSelectionFragment"
-            app:destination="@id/shopSelectionFragment"
+            android:id="@+id/action_splashFragment_to_directInputFragment"
+            app:destination="@id/directInputFragment"
             app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true" />
     </fragment>

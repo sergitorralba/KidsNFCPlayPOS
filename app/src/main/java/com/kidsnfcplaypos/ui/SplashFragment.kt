@@ -33,11 +33,11 @@ class SplashFragment : Fragment() {
         requireActivity().findViewById<View>(R.id.toolbar)?.visibility = View.GONE
         requireActivity().findViewById<BottomNavigationView>(R.id.bottom_nav)?.visibility = View.GONE
 
-        // Wait for 2 seconds then navigate to the shop
+        // Wait for 2 seconds then navigate to direct input
         viewLifecycleOwner.lifecycleScope.launch {
             delay(2000)
             if (isAdded) {
-                findNavController().navigate(R.id.action_splashFragment_to_shopSelectionFragment)
+                findNavController().navigate(R.id.action_splashFragment_to_directInputFragment)
             }
         }
     }
