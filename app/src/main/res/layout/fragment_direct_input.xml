@@ -4,96 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".ui.directinput.DirectInputFragment">
 
-    <TextView
-        android:id="@+id/amountDisplayText"
+    <!-- Cash Register Display Area (Matching Calculator) -->
+    <LinearLayout
+        android:id="@+id/displayContainer"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:fontFamily="monospace"
-        android:gravity="end"
-        android:text="0.00"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="64sp"
+        android:layout_height="0dp"
+        android:background="@color/white"
+        android:elevation="4dp"
+        android:gravity="bottom|end"
+        android:orientation="vertical"
+        android:padding="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.25"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1,234.56" />
+        app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/amountDisplayText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:includeFontPadding="false"
+            android:text="0.00"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="64sp"
+            android:textStyle="bold"
+            tools:text="123.45" />
+
+    </LinearLayout>
+
+    <!-- Keypad using weighted GridLayout (Matching Calculator) -->
     <GridLayout
         android:id="@+id/keypadLayout"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
         android:columnCount="3"
         android:rowCount="4"
-        android:padding="8dp"
+        android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/amountDisplayText">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/displayContainer">
 
-        <Button
-            android:id="@+id/btn7"
-            style="@style/CalculatorButton.Number"
-            android:text="7" />
+        <Button android:id="@+id/btn7" style="@style/CalculatorButton.Number" android:text="7" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn8" style="@style/CalculatorButton.Number" android:text="8" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn9" style="@style/CalculatorButton.Number" android:text="9" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
-        <Button
-            android:id="@+id/btn8"
-            style="@style/CalculatorButton.Number"
-            android:text="8" />
+        <Button android:id="@+id/btn4" style="@style/CalculatorButton.Number" android:text="4" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn5" style="@style/CalculatorButton.Number" android:text="5" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn6" style="@style/CalculatorButton.Number" android:text="6" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
-        <Button
-            android:id="@+id/btn9"
-            style="@style/CalculatorButton.Number"
-            android:text="9" />
+        <Button android:id="@+id/btn1" style="@style/CalculatorButton.Number" android:text="1" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn2" style="@style/CalculatorButton.Number" android:text="2" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn3" style="@style/CalculatorButton.Number" android:text="3" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
-        <Button
-            android:id="@+id/btn4"
-            style="@style/CalculatorButton.Number"
-            android:text="4" />
+        <Button android:id="@+id/btnDelete" style="@style/CalculatorButton.Operator" android:text="DEL" 
+            android:backgroundTint="@color/errorColor"
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btn0" style="@style/CalculatorButton.Number" android:text="0" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
+        <Button android:id="@+id/btnEnter" style="@style/CalculatorButton.Accent" android:text="ENTER" 
+            android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
-        <Button
-            android:id="@+id/btn5"
-            style="@style/CalculatorButton.Number"
-            android:text="5" />
-
-        <Button
-            android:id="@+id/btn6"
-            style="@style/CalculatorButton.Number"
-            android:text="6" />
-
-        <Button
-            android:id="@+id/btn1"
-            style="@style/CalculatorButton.Number"
-            android:text="1" />
-
-        <Button
-            android:id="@+id/btn2"
-            style="@style/CalculatorButton.Number"
-            android:text="2" />
-
-        <Button
-            android:id="@+id/btn3"
-            style="@style/CalculatorButton.Number"
-            android:text="3" />
-
-        <Button
-            android:id="@+id/btnDelete"
-            style="@style/CalculatorButton.Operator"
-            android:text="DEL" />
-
-        <Button
-            android:id="@+id/btn0"
-            style="@style/CalculatorButton.Number"
-            android:text="0" />
-
-        <Button
-            android:id="@+id/btnEnter"
-            style="@style/CalculatorButton.Accent"
-            android:enabled="false"
-            android:text="ENTER" />
     </GridLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
