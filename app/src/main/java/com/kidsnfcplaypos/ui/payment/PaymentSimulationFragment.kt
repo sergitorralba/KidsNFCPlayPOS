@@ -62,12 +62,23 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
         }
     }
 
+    private val processingAnimation: RotateAnimation by lazy {
+        RotateAnimation(
+            0f, 360f,
+            Animation.RELATIVE_TO_SELF, 0.5f,
+            Animation.RELATIVE_TO_SELF, 0.5f
+        ).apply {
+            duration = 2000
+            repeatCount = Animation.INFINITE
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(context)
         if (nfcAdapter == null) {
-            Toast.makeText(context, "NFC is not available on this device.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, R.string.nfc_not_available, Toast.LENGTH_LONG).show()
         }
 
 
@@ -191,15 +202,7 @@ class PaymentSimulationFragment : Fragment(), NfcAdapter.ReaderCallback, SoundPo
 
     private fun startRotationAnimation() {
         if (binding.imageConnection.animation == null) {
-            val rotate = RotateAnimation(
-                0f, 360f,
-                Animation.RELATIVE_TO_SELF, 0.5f,
-                Animation.RELATIVE_TO_SELF, 0.5f
-            ).apply {
-                duration = 2000
-                repeatCount = Animation.INFINITE
-            }
-            binding.imageConnection.startAnimation(rotate)
+            binding.imageConnection.startAnimation(processingAnimation)
         }
     }
 

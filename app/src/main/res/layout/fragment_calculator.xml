@@ -61,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@id/displayContainer">
 
         <!-- Row 1 -->
-        <Button android:id="@+id/btnClear" style="@style/CalculatorButton" android:text="C" 
+        <Button android:id="@+id/btnClear" style="@style/CalculatorButton" android:text="@string/btn_clear" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
         <Button android:id="@+id/btnMultiply" style="@style/CalculatorButton.Operator" android:text="x" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
@@ -108,7 +108,7 @@
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
         <Button android:id="@+id/btnDecimal" style="@style/CalculatorButton" android:text="." 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
-        <Button android:id="@+id/btnPay" style="@style/CalculatorButton.Accent" android:text="TOTAL" 
+        <Button android:id="@+id/btnPay" style="@style/CalculatorButton.Accent" android:text="@string/btn_total" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"
             android:layout_columnSpan="2"/>
 

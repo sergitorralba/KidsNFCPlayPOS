@@ -70,12 +70,12 @@
         <Button android:id="@+id/btn3" style="@style/CalculatorButton.Number" android:text="3" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
-        <Button android:id="@+id/btnDelete" style="@style/CalculatorButton.Operator" android:text="DEL" 
+        <Button android:id="@+id/btnDelete" style="@style/CalculatorButton.Operator" android:text="@string/btn_del" 
             android:backgroundTint="@color/errorColor"
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
         <Button android:id="@+id/btn0" style="@style/CalculatorButton.Number" android:text="0" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
-        <Button android:id="@+id/btnEnter" style="@style/CalculatorButton.Accent" android:text="ENTER" 
+        <Button android:id="@+id/btnEnter" style="@style/CalculatorButton.Accent" android:text="@string/btn_enter" 
             android:layout_columnWeight="1" android:layout_rowWeight="1" android:layout_gravity="fill"/>
 
     </GridLayout>

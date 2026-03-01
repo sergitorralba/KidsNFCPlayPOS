@@ -74,5 +74,39 @@
     <!-- Simulación de Pago -->
     <string name="payment_processing_timer">Quedan %d segundos</string>
 
-    <string name="select_language_title">Seleccionar Idioma</string>
-</resources>
+        <string name="select_language_title">Seleccionar Idioma</string>
+    
+        <!-- UI General -->
+        <string name="total_label">Total</string>
+        <string name="cancel_label">Cancelar</string>
+        <string name="pay_label">Pagar</string>
+        <string name="accept_label">Aceptar</string>
+        <string name="retry_label">Reintentar</string>
+    
+        <!-- Etiquetas de Botones -->
+        <string name="btn_del">BORRAR</string>
+        <string name="btn_enter">ENTRAR</string>
+        <string name="btn_clear">C</string>
+        <string name="btn_total">TOTAL</string>
+    
+        <!-- Encabezados y Títulos de UI -->
+        <string name="cart_summary_title">Resumen del Carrito</string>
+        <string name="calculation_summary_title">Resumen del Cálculo</string>
+        <string name="select_menu_title">Selecciona un Menú</string>
+        <string name="visible_features_title">Funciones Visibles</string>
+    
+        <!-- Ajustes -->
+        <string name="enable_shop">Habilitar Tienda</string>
+        <string name="enable_calculator">Habilitar Calculadora</string>
+        <string name="direct_input_always_enabled">La entrada directa siempre está habilitada.</string>
+    
+        <!-- Estado de Simulación de Pago -->
+        <string name="tap_to_pay">Acerca tu tarjeta para pagar</string>
+        <string name="payment_success">¡Pago Completado!</string>
+        <string name="payment_failure">¡Pago Fallido!</string>
+    
+        <!-- Mensajes de Error -->
+        <string name="error_loading_categories">Error al cargar categorías</string>
+        <string name="nfc_not_available">El NFC no está disponible en este dispositivo.</string>
+    </resources>
+    

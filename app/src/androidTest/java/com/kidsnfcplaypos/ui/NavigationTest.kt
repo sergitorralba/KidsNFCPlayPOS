@@ -22,24 +22,24 @@ class NavigationTest {
 
         // 1. Splash Screen
         // We wait for splash screen to finish (2 seconds delay)
-        Thread.sleep(2500)
+        Thread.sleep(4000)
 
         // 2. Direct Input Screen should be visible
         onView(withId(R.id.amountDisplayText)).check(matches(isDisplayed()))
-        onView(withId(R.id.amountDisplayText)).check(matches(withText("0.00")))
+        onView(withId(R.id.amountDisplayText)).check(matches(org.hamcrest.Matchers.anyOf(withText("0.00"), withText("0,00"))))
 
         // 3. Type an amount: 1 2 5
         onView(withId(R.id.btn1)).perform(click())
         onView(withId(R.id.btn2)).perform(click())
         onView(withId(R.id.btn5)).perform(click())
         
-        onView(withId(R.id.amountDisplayText)).check(matches(withText("1.25")))
+        onView(withId(R.id.amountDisplayText)).check(matches(org.hamcrest.Matchers.anyOf(withText("1.25"), withText("1,25"))))
 
         // 4. Click ENTER to go to Payment
         onView(withId(R.id.btnEnter)).perform(click())
 
         // 5. Check if Payment Simulation is visible
         onView(withId(R.id.text_waiting_for_nfc)).check(matches(isDisplayed()))
-        onView(withId(R.id.text_amount_to_pay)).check(matches(withText(containsString("1.25"))))
+        onView(withId(R.id.text_amount_to_pay)).check(matches(org.hamcrest.Matchers.anyOf(withText(containsString("1.25")), withText(containsString("1,25")))))
     }
 }

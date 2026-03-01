@@ -38,6 +38,8 @@ class CalculatorViewModel : ViewModel() {
         currency = java.util.Currency.getInstance("EUR")
     }
 
+    private val displayFormatter = DecimalFormat("0.00", DecimalFormatSymbols(Locale.getDefault()))
+
     fun onDigit(digit: Char) {
         if (_rawDigits.value.length < 9) {
             _rawDigits.value += digit
@@ -58,8 +60,7 @@ class CalculatorViewModel : ViewModel() {
             raw.isEmpty() -> "0.00"
             else -> {
                 val decimal = BigDecimal(raw).movePointLeft(2)
-                val formatter = DecimalFormat("0.00", DecimalFormatSymbols(Locale.getDefault()))
-                formatter.format(decimal)
+                displayFormatter.format(decimal)
             }
         }
     }
@@ -169,8 +170,6 @@ class CalculatorViewModel : ViewModel() {
     }
 
     private fun formatNumber(number: BigDecimal): String {
-        val symbols = DecimalFormatSymbols(Locale.getDefault())
-        val formatter = DecimalFormat("0.00", symbols)
-        return formatter.format(number)
+        return displayFormatter.format(number)
     }
 }

@@ -14,6 +14,11 @@ class DirectInputViewModel : ViewModel() {
     private val _digitString = MutableStateFlow("")
     private val maxLength = 9 // Max digits, e.g., for 9,999,999.99
 
+    private val displayFormatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
+        minimumFractionDigits = 2
+        maximumFractionDigits = 2
+    }
+
     // Derived state for the actual BigDecimal amount
     val currentAmount: StateFlow<BigDecimal> = _digitString.map { digits ->
         if (digits.isEmpty()) {
@@ -31,13 +36,7 @@ class DirectInputViewModel : ViewModel() {
             BigDecimal(digits).movePointLeft(2)
         }
         
-        // Use standard NumberFormat for locale-aware decimal/thousand separators
-        val formatter = NumberFormat.getNumberInstance(Locale.getDefault()).apply {
-            minimumFractionDigits = 2
-            maximumFractionDigits = 2
-        }
-        
-        formatter.format(decimalAmount)
+        displayFormatter.format(decimalAmount)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), "0.00")
 
     // Derived state to enable/disable the payment button

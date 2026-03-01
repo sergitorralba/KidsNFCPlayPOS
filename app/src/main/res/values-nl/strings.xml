@@ -74,5 +74,39 @@
     <!-- Betaling Simulatie -->
     <string name="payment_processing_timer">%d seconden resterend</string>
 
-    <string name="select_language_title">Selecteer Taal</string>
-</resources>
+        <string name="select_language_title">Selecteer Taal</string>
+    
+        <!-- Algemene UI -->
+        <string name="total_label">Totaal</string>
+        <string name="cancel_label">Annuleren</string>
+        <string name="pay_label">Betalen</string>
+        <string name="accept_label">Accepteren</string>
+        <string name="retry_label">Opnieuw proberen</string>
+    
+        <!-- Knoppen -->
+        <string name="btn_del">DEL</string>
+        <string name="btn_enter">ENTER</string>
+        <string name="btn_clear">C</string>
+        <string name="btn_total">TOTAAL</string>
+    
+        <!-- UI Koppen & Titels -->
+        <string name="cart_summary_title">Winkelwagen Overzicht</string>
+        <string name="calculation_summary_title">Berekening Overzicht</string>
+        <string name="select_menu_title">Selecteer een Menu</string>
+        <string name="visible_features_title">Zichtbare Functies</string>
+    
+        <!-- Instellingen -->
+        <string name="enable_shop">Winkel Inschakelen</string>
+        <string name="enable_calculator">Rekenmachine Inschakelen</string>
+        <string name="direct_input_always_enabled">Directe bedrag invoer is altijd ingeschakeld.</string>
+    
+        <!-- Betaling Simulatie Status -->
+        <string name="tap_to_pay">Houd uw kaart tegen het apparaat</string>
+        <string name="payment_success">Betaling Geslaagd!</string>
+        <string name="payment_failure">Betaling Mislukt!</string>
+    
+        <!-- Foutmeldingen -->
+        <string name="error_loading_categories">Fout bij laden van categorieën</string>
+        <string name="nfc_not_available">NFC is niet beschikbaar op dit apparaat.</string>
+    </resources>
+    

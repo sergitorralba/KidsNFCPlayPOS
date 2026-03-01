@@ -41,8 +41,8 @@ class ShopSelectionViewModel(
     private val appPrefs = application.getSharedPreferences("app_prefs", android.content.Context.MODE_PRIVATE)
     private val KEY_SELECTED_MENU = "selected_menu_id"
 
-    private fun getCurrencyFormatter(): NumberFormat {
-        return NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
+    private val currencyFormatter: NumberFormat by lazy {
+        NumberFormat.getCurrencyInstance(Locale.getDefault()).apply {
             currency = java.util.Currency.getInstance("EUR")
         }
     }
@@ -68,7 +68,7 @@ class ShopSelectionViewModel(
     val shopListItems: StateFlow<List<ShopListItem>> = combine(uiState, _cart, _refreshTrigger) { state, cart, _ ->
         Log.d("ShopSelectionVM", "Calculating shopListItems for menu: ${state.selectedMenuId}")
         val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
-        val formatter = getCurrencyFormatter()
+        val formatter = currencyFormatter
         selectedMenu?.subCategories?.flatMap { subCategory ->
             // Resolve the subcategory name from resources
             val localizedSubCategoryName = resourceResolver.getString(subCategory.nameStringResourceName)
@@ -105,7 +105,7 @@ class ShopSelectionViewModel(
     )
 
     val cartItems: StateFlow<List<ItemListItem>> = combine(_cart, _refreshTrigger) { cart, _ ->
-        val formatter = getCurrencyFormatter()
+        val formatter = currencyFormatter
         
         // Return only items that are actually in the cart, using the global index
         cart.mapNotNull { (itemId, quantity) ->
@@ -191,7 +191,7 @@ class ShopSelectionViewModel(
             }.onFailure { throwable ->
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
-                    error = "Failed to load menu categories: ${throwable.localizedMessage}"
+                    error = "${resourceResolver.getString("error_loading_categories")}: ${throwable.localizedMessage}"
                 )
             }
         }

@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select a Menu"
+        android:text="@string/select_menu_title"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:layout_marginBottom="16dp"/>
 

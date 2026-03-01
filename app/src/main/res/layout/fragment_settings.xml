@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Visible Features"
+        android:text="@string/visible_features_title"
         android:textAppearance="?attr/textAppearanceHeadline6"
         android:layout_marginBottom="16dp" />
 
@@ -30,7 +30,7 @@
                 android:id="@+id/switchShop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enable Shop"
+                android:text="@string/enable_shop"
                 android:checked="true" />
 
             <View
@@ -43,7 +43,7 @@
                 android:id="@+id/switchCalculator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Enable Calculator"
+                android:text="@string/enable_calculator"
                 android:checked="true" />
 
             <View
@@ -55,7 +55,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Direct Amount Input is always enabled."
+                android:text="@string/direct_input_always_enabled"
                 android:textAppearance="?attr/textAppearanceCaption"
                 android:textColor="@color/textColorSecondary" />
 

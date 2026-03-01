@@ -74,5 +74,39 @@
     <!-- Payment Simulation -->
     <string name="payment_processing_timer">%d seconds remaining</string>
 
-    <string name="select_language_title">Select Language</string>
-</resources>
+        <string name="select_language_title">Select Language</string>
+    
+        <!-- General UI -->
+        <string name="total_label">Total</string>
+        <string name="cancel_label">Cancel</string>
+        <string name="pay_label">Pay</string>
+        <string name="accept_label">Accept</string>
+        <string name="retry_label">Try Again</string>
+    
+        <!-- Button Labels -->
+        <string name="btn_del">DEL</string>
+        <string name="btn_enter">ENTER</string>
+        <string name="btn_clear">C</string>
+        <string name="btn_total">TOTAL</string>
+    
+        <!-- UI Headers & Titles -->
+        <string name="cart_summary_title">Cart Summary</string>
+        <string name="calculation_summary_title">Calculation Summary</string>
+        <string name="select_menu_title">Select a Menu</string>
+        <string name="visible_features_title">Visible Features</string>
+    
+        <!-- Settings -->
+        <string name="enable_shop">Enable Shop</string>
+        <string name="enable_calculator">Enable Calculator</string>
+        <string name="direct_input_always_enabled">Direct Amount Input is always enabled.</string>
+    
+        <!-- Payment Simulation Status -->
+        <string name="tap_to_pay">Tap your card to pay</string>
+        <string name="payment_success">Payment Successful!</string>
+        <string name="payment_failure">Payment Failed!</string>
+    
+        <!-- Error Messages -->
+        <string name="error_loading_categories">Error loading categories</string>
+        <string name="nfc_not_available">NFC is not available on this device.</string>
+    </resources>
+    
