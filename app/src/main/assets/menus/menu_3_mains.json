@@ -1,0 +1,23 @@
+{
+  "id": "mains",
+  "nameStringResourceName": "category_mains",
+  "displayName": "Main Courses",
+  "subCategories": [
+    {
+      "id": "mains_main",
+      "nameStringResourceName": "subcategory_food",
+      "displayName": "Food",
+      "items": [
+        { "id": "restaurant_burger", "nameStringResourceName": "menu_item_restaurant_burger", "price": 8.50 },
+        { "id": "restaurant_pizza", "nameStringResourceName": "menu_item_restaurant_pizza", "price": 10.00 },
+        { "id": "restaurant_pasta", "nameStringResourceName": "menu_item_restaurant_pasta", "price": 7.50 },
+        { "id": "restaurant_salad", "nameStringResourceName": "menu_item_restaurant_salad", "price": 6.00 },
+        { "id": "restaurant_nuggets", "nameStringResourceName": "menu_item_restaurant_nuggets", "price": 5.00 },
+        { "id": "restaurant_hotdog", "nameStringResourceName": "menu_item_restaurant_hotdog", "price": 4.50 },
+        { "id": "restaurant_soup", "nameStringResourceName": "menu_item_restaurant_soup", "price": 4.00 },
+        { "id": "restaurant_tacos", "nameStringResourceName": "menu_item_restaurant_tacos", "price": 7.00 },
+        { "id": "cafe_sandwich", "nameStringResourceName": "menu_item_cafe_sandwich", "price": 4.50 }
+      ]
+    }
+  ]
+}

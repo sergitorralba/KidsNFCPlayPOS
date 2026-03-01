@@ -4,7 +4,7 @@ A kid-friendly "Point of Sale" (POS) Android application designed for play-prete
 
 ## 🚀 Features
 
-*   **Dynamic Shop Menus:** Switch between different shops (Cafe, Restaurant, Fruit Shop) with categorized items.
+*   **Dynamic Menu Categories:** Switch between different subjects (Warm Drinks, Cold Drinks, Mains, Snacks, Fruits, Desserts) while maintaining a persistent shopping cart across all categories.
 *   **Shopping Cart:** Add/remove items to a cart and review them in a summary screen before payment.
 *   **Cash Register Calculator:**
     *   Uses a "Paper Tape" style history to track every line item.

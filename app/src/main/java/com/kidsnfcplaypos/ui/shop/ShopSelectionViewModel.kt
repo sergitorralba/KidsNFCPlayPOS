@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kidsnfcplaypos.data.model.MenuCategory
+import com.kidsnfcplaypos.data.model.MenuItem
 import com.kidsnfcplaypos.data.model.SubCategory
 import com.kidsnfcplaypos.data.repository.MenuRepository
 import com.kidsnfcplaypos.util.ResourceResolver
@@ -48,6 +49,8 @@ class ShopSelectionViewModel(
 
     // --- Internal Data ---
     private var _allMenuCategories = emptyList<MenuCategory>()
+    // All items from all menus indexed by their ID for easy lookup during total calculation
+    private var _allItemsById = emptyMap<String, MenuItem>()
 
     // --- Source of Truth StateFlows ---
     private val _uiState = MutableStateFlow(ShopSelectionUiState())
@@ -56,9 +59,7 @@ class ShopSelectionViewModel(
 
     // --- Public-facing Derived StateFlows ---
     val uiState: StateFlow<ShopSelectionUiState> = combine(_uiState, _refreshTrigger) { state, _ ->
-        // Use all menus since individual toggling was removed in favor of whole feature toggle
         val filteredCategories = _allMenuCategories
-
         state.copy(availableMenus = filteredCategories.map {
             MenuCategoryUI(it.id, resourceResolver.getString(it.nameStringResourceName))
         })
@@ -89,15 +90,11 @@ class ShopSelectionViewModel(
         initialValue = emptyList()
     )
 
-    val totalAmount: StateFlow<BigDecimal> = combine(uiState, _cart) { state, cart ->
+    val totalAmount: StateFlow<BigDecimal> = combine(_cart, _refreshTrigger) { cart, _ ->
         var total = BigDecimal.ZERO
-        val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
-        if (selectedMenu != null) {
-            val allItemsById = selectedMenu.subCategories.flatMap { it.items }.associateBy { it.id }
-            cart.forEach { (itemId, quantity) ->
-                allItemsById[itemId]?.let { menuItem ->
-                    total += menuItem.price.multiply(BigDecimal(quantity))
-                }
+        cart.forEach { (itemId, quantity) ->
+            _allItemsById[itemId]?.let { menuItem ->
+                total += menuItem.price.multiply(BigDecimal(quantity))
             }
         }
         total
@@ -107,21 +104,20 @@ class ShopSelectionViewModel(
         initialValue = BigDecimal.ZERO
     )
 
-    val cartItems: StateFlow<List<ItemListItem>> = combine(uiState, _cart, _refreshTrigger) { state, cart, _ ->
-        val selectedMenu = _allMenuCategories.find { it.id == state.selectedMenuId }
+    val cartItems: StateFlow<List<ItemListItem>> = combine(_cart, _refreshTrigger) { cart, _ ->
         val formatter = getCurrencyFormatter()
-        if (selectedMenu == null) return@combine emptyList<ItemListItem>()
-
-        selectedMenu.subCategories.flatMap { it.items }
-            .filter { cart.containsKey(it.id) }
-            .map { menuItem ->
+        
+        // Return only items that are actually in the cart, using the global index
+        cart.mapNotNull { (itemId, quantity) ->
+            _allItemsById[itemId]?.let { menuItem ->
                 ItemListItem(
                     menuItem = menuItem,
                     displayName = resourceResolver.getString(menuItem.nameStringResourceName),
                     displayPrice = formatter.format(menuItem.price),
-                    quantity = cart[menuItem.id] ?: 0
+                    quantity = quantity
                 )
             }
+        }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -175,6 +171,11 @@ class ShopSelectionViewModel(
         viewModelScope.launch {
             menuRepository.loadAllMenuCategories().onSuccess { categories ->
                 _allMenuCategories = categories
+                // Flatten all items into a single map for global total calculation
+                _allItemsById = categories.flatMap { it.subCategories }
+                    .flatMap { it.items }
+                    .associateBy { it.id }
+
                 val savedMenuId = shopPrefs.getString(KEY_SELECTED_MENU, null)
                 val initialMenuId = if (categories.any { it.id == savedMenuId }) {
                     savedMenuId

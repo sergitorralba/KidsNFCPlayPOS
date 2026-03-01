@@ -2,17 +2,17 @@
     <string name="app_name">KidsNFCPlayPOS</string>
 
     <!-- Categories de Menú -->
-    <string name="category_cafe">Cafeteria</string>
-    <string name="category_restaurant">Restaurant</string>
-    <string name="category_fruit">Fruiteria</string>
+    <string name="category_warm_drinks">Begudes Calentes</string>
+    <string name="category_cold_drinks">Begudes Fredes</string>
+    <string name="category_mains">Plats Principals</string>
+    <string name="category_snacks">Snacks</string>
+    <string name="category_fruits">Fruita Fresca</string>
+    <string name="category_desserts">Postres</string>
 
     <!-- Subcategories -->
-    <string name="subcategory_cafe_drinks">Begudes</string>
-    <string name="subcategory_cafe_food">Menjar</string>
-    <string name="subcategory_restaurant_main">Plats Principals</string>
-    <string name="subcategory_restaurant_drinks">Begudes</string>
-    <string name="subcategory_restaurant_dessert">Postres</string>
-    <string name="subcategory_fruit_fresh">Fruita Fresca</string>
+    <string name="subcategory_drinks">Begudes</string>
+    <string name="subcategory_food">Menjar</string>
+    <string name="subcategory_treats">Llepolies</string>
 
     <!-- Articles de Cafeteria -->
     <string name="menu_item_cafe_coffee">Cafè</string>

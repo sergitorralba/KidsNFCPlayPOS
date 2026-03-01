@@ -2,17 +2,17 @@
     <string name="app_name">KidsNFCPlayPOS</string>
 
     <!-- Menu Categorieën -->
-    <string name="category_cafe">Café</string>
-    <string name="category_restaurant">Restaurant</string>
-    <string name="category_fruit">Fruitwinkel</string>
+    <string name="category_warm_drinks">Warme Dranken</string>
+    <string name="category_cold_drinks">Koude Dranken</string>
+    <string name="category_mains">Hoofdgerechten</string>
+    <string name="category_snacks">Snacks</string>
+    <string name="category_fruits">Vers Fruit</string>
+    <string name="category_desserts">Nagerechten</string>
 
     <!-- Subcategorieën -->
-    <string name="subcategory_cafe_drinks">Drankjes</string>
-    <string name="subcategory_cafe_food">Eten</string>
-    <string name="subcategory_restaurant_main">Hoofdgerechten</string>
-    <string name="subcategory_restaurant_drinks">Drankjes</string>
-    <string name="subcategory_restaurant_dessert">Nagerechten</string>
-    <string name="subcategory_fruit_fresh">Vers Fruit</string>
+    <string name="subcategory_drinks">Drankjes</string>
+    <string name="subcategory_food">Eten</string>
+    <string name="subcategory_treats">Lekkers</string>
 
     <!-- Café Items -->
     <string name="menu_item_cafe_coffee">Koffie</string>

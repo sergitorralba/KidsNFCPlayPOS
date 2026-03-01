@@ -2,17 +2,17 @@
     <string name="app_name">KidsNFCPlayPOS</string>
 
     <!-- Menu Categories -->
-    <string name="category_cafe">Cafe</string>
-    <string name="category_restaurant">Restaurant</string>
-    <string name="category_fruit">Fruit Shop</string>
+    <string name="category_warm_drinks">Warm Drinks</string>
+    <string name="category_cold_drinks">Cold Drinks</string>
+    <string name="category_mains">Main Courses</string>
+    <string name="category_snacks">Snacks</string>
+    <string name="category_fruits">Fresh Fruits</string>
+    <string name="category_desserts">Desserts</string>
 
-    <!-- Subcategories -->
-    <string name="subcategory_cafe_drinks">Drinks</string>
-    <string name="subcategory_cafe_food">Food</string>
-    <string name="subcategory_restaurant_main">Main Courses</string>
-    <string name="subcategory_restaurant_drinks">Drinks</string>
-    <string name="subcategory_restaurant_dessert">Desserts</string>
-    <string name="subcategory_fruit_fresh">Fresh Fruit</string>
+    <!-- Subcategories (Reused as headers in lists) -->
+    <string name="subcategory_drinks">Drinks</string>
+    <string name="subcategory_food">Food</string>
+    <string name="subcategory_treats">Treats</string>
 
     <!-- Cafe Menu Items -->
     <string name="menu_item_cafe_coffee">Coffee</string>

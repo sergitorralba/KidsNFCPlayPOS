@@ -1,12 +1,12 @@
 {
-  "id": "fruit",
-  "nameStringResourceName": "category_fruit",
-  "displayName": "Fruit Shop",
+  "id": "fruits",
+  "nameStringResourceName": "category_fruits",
+  "displayName": "Fruits",
   "subCategories": [
     {
-      "id": "fruit_fresh",
-      "nameStringResourceName": "subcategory_fruit_fresh",
-      "displayName": "Fresh Fruit",
+      "id": "fruits_main",
+      "nameStringResourceName": "subcategory_food",
+      "displayName": "Food",
       "items": [
         { "id": "fruit_apple", "nameStringResourceName": "menu_item_fruit_apple", "price": 0.80 },
         { "id": "fruit_banana", "nameStringResourceName": "menu_item_fruit_banana", "price": 0.50 },

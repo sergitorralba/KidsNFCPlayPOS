@@ -1,0 +1,21 @@
+{
+  "id": "cold_drinks",
+  "nameStringResourceName": "category_cold_drinks",
+  "displayName": "Cold Drinks",
+  "subCategories": [
+    {
+      "id": "cold_drinks_main",
+      "nameStringResourceName": "subcategory_drinks",
+      "displayName": "Drinks",
+      "items": [
+        { "id": "cafe_juice", "nameStringResourceName": "menu_item_cafe_juice", "price": 1.50 },
+        { "id": "cafe_milkshake", "nameStringResourceName": "menu_item_cafe_milkshake", "price": 3.50 },
+        { "id": "cafe_smoothie", "nameStringResourceName": "menu_item_cafe_smoothie", "price": 4.00 },
+        { "id": "cafe_water", "nameStringResourceName": "menu_item_cafe_water", "price": 1.00 },
+        { "id": "restaurant_soda", "nameStringResourceName": "menu_item_restaurant_soda", "price": 2.50 },
+        { "id": "restaurant_lemonade", "nameStringResourceName": "menu_item_restaurant_lemonade", "price": 2.50 },
+        { "id": "restaurant_iced_tea", "nameStringResourceName": "menu_item_restaurant_iced_tea", "price": 2.00 }
+      ]
+    }
+  ]
+}
