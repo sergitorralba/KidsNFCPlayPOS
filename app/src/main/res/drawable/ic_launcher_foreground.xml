@@ -4,5 +4,5 @@
         android:width="80dp"
         android:height="80dp"
         android:gravity="center"
-        android:drawable="@drawable/appicon" />
+        android:drawable="@drawable/app_icon" />
 </layer-list>
