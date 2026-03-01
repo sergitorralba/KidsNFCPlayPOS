@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- Explicitly deny all cleartext (HTTP) traffic -->
+    <base-config cleartextTrafficPermitted="false" />
+    <!-- For an offline-only app, we don't trust any domain -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">localhost</domain>
+    </domain-config>
+</network-security-config>
