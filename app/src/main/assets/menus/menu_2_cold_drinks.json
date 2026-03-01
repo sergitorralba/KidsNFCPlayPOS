@@ -14,7 +14,9 @@
         { "id": "cafe_water", "nameStringResourceName": "menu_item_cafe_water", "price": 1.00 },
         { "id": "restaurant_soda", "nameStringResourceName": "menu_item_restaurant_soda", "price": 2.50 },
         { "id": "restaurant_lemonade", "nameStringResourceName": "menu_item_restaurant_lemonade", "price": 2.50 },
-        { "id": "restaurant_iced_tea", "nameStringResourceName": "menu_item_restaurant_iced_tea", "price": 2.00 }
+        { "id": "restaurant_iced_tea", "nameStringResourceName": "menu_item_restaurant_iced_tea", "price": 2.00 },
+        { "id": "drink_aquarius", "nameStringResourceName": "menu_item_drink_aquarius", "price": 2.50 },
+        { "id": "drink_sparkling_water", "nameStringResourceName": "menu_item_drink_sparkling_water", "price": 1.20 }
       ]
     }
   ]

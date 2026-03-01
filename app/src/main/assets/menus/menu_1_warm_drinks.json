@@ -11,6 +11,8 @@
         { "id": "cafe_coffee", "nameStringResourceName": "menu_item_cafe_coffee", "price": 2.50 },
         { "id": "cafe_tea", "nameStringResourceName": "menu_item_cafe_tea", "price": 2.00 },
         { "id": "cafe_hot_chocolate", "nameStringResourceName": "menu_item_cafe_hot_chocolate", "price": 2.75 },
+        { "id": "drink_capuccino", "nameStringResourceName": "menu_item_drink_capuccino", "price": 3.00 },
+        { "id": "drink_latte", "nameStringResourceName": "menu_item_drink_latte", "price": 3.00 },
         { "id": "restaurant_milk", "nameStringResourceName": "menu_item_restaurant_milk", "price": 1.50 }
       ]
     }

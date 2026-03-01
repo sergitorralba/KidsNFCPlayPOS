@@ -21,7 +21,9 @@
         { "id": "fruit_blueberry", "nameStringResourceName": "menu_item_fruit_blueberry", "price": 4.50 },
         { "id": "fruit_raspberry", "nameStringResourceName": "menu_item_fruit_raspberry", "price": 4.00 },
         { "id": "fruit_cherry", "nameStringResourceName": "menu_item_fruit_cherry", "price": 5.00 },
-        { "id": "fruit_peach", "nameStringResourceName": "menu_item_fruit_peach", "price": 1.50 }
+        { "id": "fruit_peach", "nameStringResourceName": "menu_item_fruit_peach", "price": 1.50 },
+        { "id": "fruit_mandarines", "nameStringResourceName": "menu_item_fruit_mandarines", "price": 2.50 },
+        { "id": "fruit_melon", "nameStringResourceName": "menu_item_fruit_melon", "price": 3.00 }
       ]
     }
   ]

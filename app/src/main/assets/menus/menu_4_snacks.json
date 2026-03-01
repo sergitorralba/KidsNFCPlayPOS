@@ -13,7 +13,9 @@
         { "id": "cafe_cookie", "nameStringResourceName": "menu_item_cafe_cookie", "price": 1.00 },
         { "id": "cafe_donut", "nameStringResourceName": "menu_item_cafe_donut", "price": 1.50 },
         { "id": "cafe_bagel", "nameStringResourceName": "menu_item_cafe_bagel", "price": 2.50 },
-        { "id": "cafe_brownie", "nameStringResourceName": "menu_item_cafe_brownie", "price": 2.00 }
+        { "id": "cafe_brownie", "nameStringResourceName": "menu_item_cafe_brownie", "price": 2.00 },
+        { "id": "snack_cup_cake", "nameStringResourceName": "menu_item_snack_cup_cake", "price": 2.50 },
+        { "id": "snack_sausage_roll", "nameStringResourceName": "menu_item_snack_sausage_roll", "price": 3.00 }
       ]
     }
   ]

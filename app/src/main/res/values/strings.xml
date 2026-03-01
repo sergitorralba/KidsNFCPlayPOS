@@ -70,6 +70,21 @@
     <string name="menu_item_fruit_raspberry">Raspberry</string>
     <string name="menu_item_fruit_cherry">Cherry</string>
     <string name="menu_item_fruit_peach">Peach</string>
+    <string name="menu_item_fruit_mandarines">Mandarines</string>
+    <string name="menu_item_fruit_melon">Melon</string>
+
+    <!-- New Menu Items -->
+    <string name="menu_item_dessert_apple_mousse">Apple Mousse</string>
+    <string name="menu_item_dessert_lava_cake">Lava Cake</string>
+    <string name="menu_item_drink_aquarius">Aquarius</string>
+    <string name="menu_item_drink_sparkling_water">Sparkling Water</string>
+    <string name="menu_item_drink_capuccino">Capuccino</string>
+    <string name="menu_item_drink_latte">Latte</string>
+    <string name="menu_item_main_omelette">Omelette</string>
+    <string name="menu_item_main_fried_eggs">Fried Eggs</string>
+    <string name="menu_item_main_grilled_cheese">Grilled Cheese Sandwich</string>
+    <string name="menu_item_snack_cup_cake">Cupcake</string>
+    <string name="menu_item_snack_sausage_roll">Sausage Roll</string>
 
     <!-- Payment Simulation -->
     <string name="payment_processing_timer">%d seconds remaining</string>

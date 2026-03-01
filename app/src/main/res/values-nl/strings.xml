@@ -70,6 +70,21 @@
     <string name="menu_item_fruit_raspberry">Framboos</string>
     <string name="menu_item_fruit_cherry">Kers</string>
     <string name="menu_item_fruit_peach">Perzik</string>
+    <string name="menu_item_fruit_mandarines">Mandarijnen</string>
+    <string name="menu_item_fruit_melon">Meloen</string>
+
+    <!-- Nieuwe Items -->
+    <string name="menu_item_dessert_apple_mousse">Appelmousse</string>
+    <string name="menu_item_dessert_lava_cake">Chocolade Lavacake</string>
+    <string name="menu_item_drink_aquarius">Aquarius</string>
+    <string name="menu_item_drink_sparkling_water">Bruiswater</string>
+    <string name="menu_item_drink_capuccino">Cappuccino</string>
+    <string name="menu_item_drink_latte">Koffie Verkeerd</string>
+    <string name="menu_item_main_omelette">Omelet</string>
+    <string name="menu_item_main_fried_eggs">Spiegeleieren</string>
+    <string name="menu_item_main_grilled_cheese">Tosti</string>
+    <string name="menu_item_snack_cup_cake">Cupcake</string>
+    <string name="menu_item_snack_sausage_roll">Saucijzenbroodje</string>
 
     <!-- Betaling Simulatie -->
     <string name="payment_processing_timer">%d seconden resterend</string>

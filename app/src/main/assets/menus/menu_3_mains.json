@@ -16,6 +16,9 @@
         { "id": "restaurant_hotdog", "nameStringResourceName": "menu_item_restaurant_hotdog", "price": 4.50 },
         { "id": "restaurant_soup", "nameStringResourceName": "menu_item_restaurant_soup", "price": 4.00 },
         { "id": "restaurant_tacos", "nameStringResourceName": "menu_item_restaurant_tacos", "price": 7.00 },
+        { "id": "main_omelette", "nameStringResourceName": "menu_item_main_omelette", "price": 5.50 },
+        { "id": "main_fried_eggs", "nameStringResourceName": "menu_item_main_fried_eggs", "price": 4.00 },
+        { "id": "main_grilled_cheese", "nameStringResourceName": "menu_item_main_grilled_cheese", "price": 3.50 },
         { "id": "cafe_sandwich", "nameStringResourceName": "menu_item_cafe_sandwich", "price": 4.50 }
       ]
     }

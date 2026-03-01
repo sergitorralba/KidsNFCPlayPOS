@@ -13,7 +13,9 @@
         { "id": "restaurant_fruit_salad", "nameStringResourceName": "menu_item_restaurant_fruit_salad", "price": 4.00 },
         { "id": "restaurant_pancakes", "nameStringResourceName": "menu_item_restaurant_pancakes", "price": 5.50 },
         { "id": "restaurant_pie", "nameStringResourceName": "menu_item_restaurant_pie", "price": 4.00 },
-        { "id": "restaurant_pudding", "nameStringResourceName": "menu_item_restaurant_pudding", "price": 3.00 }
+        { "id": "restaurant_pudding", "nameStringResourceName": "menu_item_restaurant_pudding", "price": 3.00 },
+        { "id": "dessert_apple_mousse", "nameStringResourceName": "menu_item_dessert_apple_mousse", "price": 3.50 },
+        { "id": "dessert_lava_cake", "nameStringResourceName": "menu_item_dessert_lava_cake", "price": 4.50 }
       ]
     }
   ]

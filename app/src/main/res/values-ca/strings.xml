@@ -70,6 +70,21 @@
     <string name="menu_item_fruit_raspberry">Gerds</string>
     <string name="menu_item_fruit_cherry">Cirera</string>
     <string name="menu_item_fruit_peach">Pressec</string>
+    <string name="menu_item_fruit_mandarines">Mandarines</string>
+    <string name="menu_item_fruit_melon">Meló</string>
+
+    <!-- Nous Articles -->
+    <string name="menu_item_dessert_apple_mousse">Mousse de Poma</string>
+    <string name="menu_item_dessert_lava_cake">Coulant de Xocolata</string>
+    <string name="menu_item_drink_aquarius">Aquarius</string>
+    <string name="menu_item_drink_sparkling_water">Aigua amb Gas</string>
+    <string name="menu_item_drink_capuccino">Capuccino</string>
+    <string name="menu_item_drink_latte">Cafè amb Llet</string>
+    <string name="menu_item_main_omelette">Truita Francesa</string>
+    <string name="menu_item_main_fried_eggs">Ous Ferrats</string>
+    <string name="menu_item_main_grilled_cheese">Bikini</string>
+    <string name="menu_item_snack_cup_cake">Cupcake</string>
+    <string name="menu_item_snack_sausage_roll">Rotllet de Salsitxa</string>
 
     <!-- Simulació de Pagament -->
     <string name="payment_processing_timer">Queden %d segons</string>

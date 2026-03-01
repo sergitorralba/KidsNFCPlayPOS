@@ -70,6 +70,21 @@
     <string name="menu_item_fruit_raspberry">Frambuesa</string>
     <string name="menu_item_fruit_cherry">Cereza</string>
     <string name="menu_item_fruit_peach">Melocotón</string>
+    <string name="menu_item_fruit_mandarines">Mandarinas</string>
+    <string name="menu_item_fruit_melon">Melón</string>
+
+    <!-- Nuevos Artículos -->
+    <string name="menu_item_dessert_apple_mousse">Mousse de Manzana</string>
+    <string name="menu_item_dessert_lava_cake">Coulant de Chocolate</string>
+    <string name="menu_item_drink_aquarius">Aquarius</string>
+    <string name="menu_item_drink_sparkling_water">Agua con Gas</string>
+    <string name="menu_item_drink_capuccino">Capuchino</string>
+    <string name="menu_item_drink_latte">Café Latte</string>
+    <string name="menu_item_main_omelette">Tortilla Francesa</string>
+    <string name="menu_item_main_fried_eggs">Huevos Fritos</string>
+    <string name="menu_item_main_grilled_cheese">Sándwich Mixto</string>
+    <string name="menu_item_snack_cup_cake">Cupcake</string>
+    <string name="menu_item_snack_sausage_roll">Hojaldre de Salchicha</string>
 
     <!-- Simulación de Pago -->
     <string name="payment_processing_timer">Quedan %d segundos</string>
