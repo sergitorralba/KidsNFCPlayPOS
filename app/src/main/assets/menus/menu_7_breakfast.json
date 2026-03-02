@@ -1,0 +1,23 @@
+{
+  "id": "breakfast",
+  "nameStringResourceName": "category_breakfast",
+  "displayName": "Breakfast",
+  "subCategories": [
+    {
+      "id": "breakfast_main",
+      "nameStringResourceName": "subcategory_food",
+      "displayName": "Food",
+      "items": [
+        { "id": "main_omelette", "nameStringResourceName": "menu_item_main_omelette", "price": 5.50 },
+        { "id": "main_fried_eggs", "nameStringResourceName": "menu_item_main_fried_eggs", "price": 4.00 },
+        { "id": "main_grilled_cheese", "nameStringResourceName": "menu_item_main_grilled_cheese", "price": 3.50 },
+        { "id": "main_bread_oil", "nameStringResourceName": "menu_item_main_bread_oil", "price": 2.50 },
+        { "id": "main_milk_cereals", "nameStringResourceName": "menu_item_main_milk_cereals", "price": 3.00 },
+        { "id": "cafe_croissant", "nameStringResourceName": "menu_item_cafe_croissant", "price": 2.75 },
+        { "id": "cafe_bagel", "nameStringResourceName": "menu_item_cafe_bagel", "price": 2.50 },
+        { "id": "dessert_yogurt", "nameStringResourceName": "menu_item_dessert_yogurt", "price": 1.50 },
+        { "id": "dessert_quark", "nameStringResourceName": "menu_item_dessert_quark", "price": 1.80 }
+      ]
+    }
+  ]
+}
